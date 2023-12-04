@@ -63,3 +63,6 @@ Simulation finished
 The given example is a 10 bodies example. The example is in [Gadget 2](https://wwwmpa.mpa-garching.mpg.de/gadget) format translated into a text file using [this converter](https://github.com/martinsparre/Gadget2Conversion).
 
 
+
+Explanation of Barnes-Hut Algorithm 
+http://arborjs.org/docs/barnes-hut

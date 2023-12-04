@@ -45,6 +45,13 @@ It is possible to download the Gadget2 test cases to test your code
 Code largely inspired by http://www-inf.telecom-sudparis.eu/COURS/CSC5001/new_site/Supports/Projet/NBody/sujet.php
 
 */
+
+// argc: argument count,    argv: argument vector.
+
+// example: ./program arg1 arg2
+// argc = 3
+// argv[0] = "./program",   argv[1] = "arg1",   argv[2] = "arg2"
+
 int main ( int argc, char **argv ) {
 
 	particle_t * array;
@@ -59,7 +66,7 @@ int main ( int argc, char **argv ) {
 	if (argc < 2)
 	{
 		fprintf(stderr, "Usage: %s [martix-market-filename]\n", argv[0]);
-		exit(1);
+		exit(1); // exit with an error
 	}
 	else    
 	{ 
