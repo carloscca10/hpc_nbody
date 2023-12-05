@@ -9,7 +9,7 @@
 #include "reader.h"
 #include <sys/time.h>
 
-void print_parameters(){
+void print_parameters(void){
 	printf("====================================================\n");
 	printf("N-Body 3D simulation code for MATH-454 course EPFL  \n");
 	printf("Parameters for the Barnes-Hut algorithm:\n");
@@ -27,7 +27,7 @@ void print_parameters(){
 	printf("\n");
 }
 
-double second()
+double second(void)
 {
         struct timeval tp;
         struct timezone tzp;
