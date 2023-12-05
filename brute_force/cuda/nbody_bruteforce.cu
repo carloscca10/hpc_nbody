@@ -2,6 +2,7 @@
 
 #include <math.h>
 #include <string>
+#include <stdexcept>
 
 #include <cuda_runtime.h>
 
