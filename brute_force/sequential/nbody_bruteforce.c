@@ -35,6 +35,8 @@ void nbodybruteforce (particle_t * array, int nbr_particles, int nbr_iterations)
 		}
 	  update_positions(array, nbr_particles,step);
 	}
+	// print final values of element number 8 of array (array[7])
+	printf("final values array[7]: ", array[7])
 }
 
 /*
