@@ -24,29 +24,63 @@ Implementation of a simple N-Body code in brute force.
 The parallelization target is CUDA
 Input format is 
 */
-void nbodybruteforce (particle_t * array, int nbr_particles, int nbr_iterations) {
+void nbodybruteforce (particle_t * host_array, int nbr_particles, int nbr_iterations) {
+    particle_t *device_array;
+    size_t size = nbr_particles * sizeof(particle_t);
 
-	int i,n;
+    // Allocate memory on the device
+    cudaMalloc(&device_array, size);
+
+    // Copy data from host to device
+    cudaMemcpy(device_array, host_array, size, cudaMemcpyHostToDevice);
+
+	int n;
 	double step = 1.;
 
-    dim3 grid_size; 
-    grid_size.x = (m + block_size.x - 1)/block_size.x;
-    grid_size.y = (m + block_size.y - 1)/block_size.y;
-
-
+	dim3 block_size(256);  // Example block size
+	dim3 grid_size((nbr_particles + block_size.x - 1) / block_size.x);
 
 	for (n = 0 ; n  < nbr_iterations ; n++){
 		printf("ITERATION %d \n",n);
 		//for (i = 0 ; i  < nbr_particles ; i++){
 		//compute_brute_force(&array[i], array, nbr_particles,step);
 		// this calculates a,v, and F; not x,y,z
-		compute_brute_force<<<grid_size, block_size>>>(&array, array, nbr_particles,step);
+	compute_brute_force<<<grid_size, block_size>>>(device_array, nbr_particles, step);
+	cudaDeviceSynchronize();
 		//}
-	  	update_positions(array, nbr_particles,step);
-	  	cudaDeviceSynchronize();
+	update_positions_kernel<<<grid_size, block_size>>>(device_array, nbr_particles, step);
+	cudaDeviceSynchronize();
+	  	
 	}
-	// print final values of element number 8 of array (array[7])
-	printf("final values array[7]: ", array[7]);
+
+
+    // Copy results back to host
+    cudaMemcpy(host_array, device_array, size, cudaMemcpyDeviceToHost);
+
+    // Free device memory
+    cudaFree(device_array);
+
+    auto error = cudaGetLastError();
+    if(error != cudaSuccess) {
+        throw std::runtime_error("Error Launching Kernel: "
+                                 + std::string(cudaGetErrorName(error)) + " - "
+                                 + std::string(cudaGetErrorString(error)));
+	}
+
+	//printf("final values of array[7]:\n");
+	printf("final values of array[7]:\n");
+	printf("x: %lf\n", host_array[7].x);
+	printf("y: %lf\n", host_array[7].y);
+	printf("z: %lf\n", host_array[7].z);
+	printf("vx: %lf\n", host_array[7].vx);
+	printf("vy: %lf\n", host_array[7].vy);
+	printf("vz: %lf\n", host_array[7].vz);
+	printf("fx: %lf\n", host_array[7].fx);
+	printf("fy: %lf\n", host_array[7].fy);
+	printf("fz: %lf\n", host_array[7].fz);
+	printf("m: %lf\n", host_array[7].m);
+	printf("id: %d\n", host_array[7].id);
+	printf("V: %lf\n", host_array[7].V);
 }
 
 /*
@@ -57,7 +91,8 @@ Update particle p1
 //void compute_brute_force(particle_t * p1, particle_t * array, int nbr_particles, double step) {
 __global__ void compute_brute_force(particle_t * array, int nbr_particles, double step) {
 	int pos = threadIdx.x + blockIdx.x * blockDim.x;
-	p1 = &array[pos];
+	particle_t *p1 = &array[pos];
+
 	double x_sep, y_sep, z_sep, dist_sq, grav_base;
 	double F_x=0.;
 	double F_y=0.;
@@ -103,6 +138,14 @@ void update_positions(particle_t * array, int nbr_particles, double step) {
 	}
 }
 
+__global__ void update_positions_kernel(particle_t * array, int nbr_particles, double step) {
+    int i = blockDim.x * blockIdx.x + threadIdx.x;
+
+	particle_t *p1 = &array[i];
+	p1->x += p1->vx * step;
+	p1->y += p1->vy * step;
+	p1->z += p1->vz * step;
+}
 
 
 
