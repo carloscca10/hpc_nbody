@@ -31,7 +31,8 @@ void nbodybruteforce (particle_t * host_array, int nbr_particles, int nbr_iterat
     size_t size = nbr_particles * sizeof(particle_t);
 
     // Allocate memory on the device
-    cudaMalloc(&device_array, size);
+    //cudaMalloc(&device_array, size);
+	cudaMalloc((void **)&device_array, size);
 
     // Copy data from host to device
     cudaMemcpy(device_array, host_array, size, cudaMemcpyHostToDevice);
