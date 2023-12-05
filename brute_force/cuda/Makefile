@@ -9,7 +9,8 @@ OBJS_NBODY=nbody.o nbody_bruteforce.o reader.o
 all: nbody-code
 
 nbody-code: $(OBJS_NBODY)
-	$(LD) $(OBJS_NBODY) $(LDFLAGS) -o $@
+# $(LD) $(OBJS_NBODY) $(LDFLAGS) -o $@
+    $(LD) nbody_bruteforce.o reader.o nbody.o $(LDFLAGS) -o $@
 
 nbody.o: nbody.c
 	$(CC) $(CFLAGS) -c nbody.c -o nbody.o
