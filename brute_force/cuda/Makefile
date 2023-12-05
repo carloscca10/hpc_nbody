@@ -9,17 +9,16 @@ OBJS_NBODY=nbody.o nbody_bruteforce.o reader.o
 all: nbody-code
 
 nbody-code: $(OBJS_NBODY)
-# $(LD) $(OBJS_NBODY) $(LDFLAGS) -o $@
     $(LD) nbody_bruteforce.o reader.o nbody.o $(LDFLAGS) -o $@
 
 nbody.o: nbody.c
-	$(CC) $(CFLAGS) -c nbody.c -o nbody.o
+    $(CC) $(CFLAGS) -c nbody.c -o nbody.o
 
 nbody_bruteforce.o: nbody_bruteforce.cu
-	$(CC) $(CFLAGS) -c nbody_bruteforce.cu -o nbody_bruteforce.o
+    $(CC) $(CFLAGS) -c nbody_bruteforce.cu -o nbody_bruteforce.o
 
 reader.o: reader.c
-	$(CC) $(CFLAGS) -c reader.c -o reader.o
+    $(CC) $(CFLAGS) -c reader.c -o reader.o
 
 clean:
-	rm -Rf nbody-code *.o *~ gmon.out
+    rm -Rf nbody-code *.o *~ gmon.out
