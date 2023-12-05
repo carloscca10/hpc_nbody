@@ -40,8 +40,8 @@ void nbodybruteforce (particle_t * host_array, int nbr_particles, int nbr_iterat
 	int n;
 	double step = 1.;
 
-	dim3 block_size(256);  // Example block size
-	dim3 grid_size((nbr_particles + block_size.x - 1) / block_size.x);
+	dim3 block_size = 256;  // Example block size
+	dim3 grid_size = (nbr_particles + block_size.x - 1) / block_size.x;
 
 	for (n = 0 ; n  < nbr_iterations ; n++){
 		printf("ITERATION %d \n",n);
