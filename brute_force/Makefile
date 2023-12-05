@@ -1,10 +1,10 @@
 CC=gcc
 LD=${CC}
 DEBUG=-g
-CFLAGS+=-Wall -Wextra -pedantic -O3 -pg $(DEBUG)
+CFLAGS+=-Wall -Wextra -pedantic -pg $(DEBUG)
 LDFLAGS+=-lm -pg $(DEBUG)
 
-OBJS_NBODY=nbody.o nbody_bruteforce.o reader.o nbody_barneshut.o
+OBJS_NBODY=nbody.o nbody_bruteforce.o reader.o
 
 all: nbody-code
 
