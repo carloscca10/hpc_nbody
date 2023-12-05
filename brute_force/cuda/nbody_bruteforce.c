@@ -2,6 +2,8 @@
 
 #include <math.h>
 
+#include <cuda_runtime.h>
+
 /*
 Min and max functions
 */
