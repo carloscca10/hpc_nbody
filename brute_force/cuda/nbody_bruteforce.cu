@@ -10,10 +10,10 @@ Min and max functions
 
 // condition ? expression_if_true : expression_if_false;
 
-double max(double x, double y) 
-{
-	return ((x) > (y) ? (x) : (y));
-} 
+// double max(double x, double y) 
+// {
+// 	return ((x) > (y) ? (x) : (y));
+// } 
 
 // double min(double x, double y) 
 // {

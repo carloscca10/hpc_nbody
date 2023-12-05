@@ -9,6 +9,7 @@
 #include "reader.h"
 #include <sys/time.h>
 
+
 void print_parameters(void){
 	printf("====================================================\n");
 	printf("N-Body 3D simulation code for MATH-454 course EPFL  \n");
