@@ -5,7 +5,7 @@
 #include <stddef.h>
 #include "parameters.h"
 #include "nbody_bruteforce.h"
-#include "nbody_barneshut.h"
+//#include "nbody_barneshut.h"
 #include "reader.h"
 #include <sys/time.h>
 
