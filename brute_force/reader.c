@@ -95,41 +95,41 @@ int get_nbr_particles(const char * restrict fn)
 	return nbr_part;
 }
 
-// particle_t getMinMax (particle_t * array, int nbr_particles) {
-// 	int i;
-// 	double minx = DBL_MAX;
-// 	double maxx = DBL_MIN;
-// 	double miny = DBL_MAX;
-// 	double maxy = DBL_MIN;
-// 	double minz = DBL_MAX;
-// 	double maxz = DBL_MIN;
-// 	double maxt, mint;
-// 	particle_t tmp;
+particle_t getMinMax (particle_t * array, int nbr_particles) {
+	int i;
+	double minx = DBL_MAX;
+	double maxx = DBL_MIN;
+	double miny = DBL_MAX;
+	double maxy = DBL_MIN;
+	double minz = DBL_MAX;
+	double maxz = DBL_MIN;
+	double maxt, mint;
+	particle_t tmp;
 	
-// 	for (i = 0; i<nbr_particles; i++){
-// 		if (array[i].x < minx) minx = array[i].x;
-// 		if (array[i].x > maxx) maxx = array[i].x;
-// 		if (array[i].y < miny) miny = array[i].y;
-// 		if (array[i].y > maxy) maxy = array[i].y;
-// 		if (array[i].z < minz) minz = array[i].z;
-// 		if (array[i].z > maxz) maxz = array[i].z;	
-// 	}
+	for (i = 0; i<nbr_particles; i++){
+		if (array[i].x < minx) minx = array[i].x;
+		if (array[i].x > maxx) maxx = array[i].x;
+		if (array[i].y < miny) miny = array[i].y;
+		if (array[i].y > maxy) maxy = array[i].y;
+		if (array[i].z < minz) minz = array[i].z;
+		if (array[i].z > maxz) maxz = array[i].z;	
+	}
 
-// 	maxt = max(maxx,maxy);
-// 	maxt = max(maxt,maxz);
-// 	mint = min(minx,miny);
-// 	mint = min(mint,minz);
+	maxt = max(maxx,maxy);
+	maxt = max(maxt,maxz);
+	mint = min(minx,miny);
+	mint = min(mint,minz);
 
-// 	tmp.x = mint*SIZEOFSPACE;
-// 	tmp.vx = maxt*SIZEOFSPACE;
-// 	tmp.y = mint*SIZEOFSPACE;
-// 	tmp.vy = maxt*SIZEOFSPACE;
-// 	tmp.z = mint*SIZEOFSPACE;
-// 	tmp.vz = maxt*SIZEOFSPACE;
+	tmp.x = mint*SIZEOFSPACE;
+	tmp.vx = maxt*SIZEOFSPACE;
+	tmp.y = mint*SIZEOFSPACE;
+	tmp.vy = maxt*SIZEOFSPACE;
+	tmp.z = mint*SIZEOFSPACE;
+	tmp.vz = maxt*SIZEOFSPACE;
 
-// 	return tmp;
+	return tmp;
 
-// }
+}
 
 
 
