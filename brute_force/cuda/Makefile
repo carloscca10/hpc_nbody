@@ -1,7 +1,7 @@
 CC=nvcc
 LD=${CC}
 DEBUG=-g
-CFLAGS+=-Wall -Wextra -pedantic -O3 $(DEBUG)
+CFLAGS=-O3 $(DEBUG) # Removed -Wall, -Wextra, and -pedantic
 LDFLAGS+=-lm $(DEBUG)
 
 OBJS_NBODY=nbody.o nbody_bruteforce.o reader.o
