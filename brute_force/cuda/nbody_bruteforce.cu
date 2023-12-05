@@ -85,6 +85,9 @@ __global__ void update_positions_kernel(particle_t * array, int nbr_particles, d
 
 
 
+
+
+
 void nbodybruteforce (particle_t * host_array, int nbr_particles, int nbr_iterations) {
     particle_t *device_array;
     size_t size = nbr_particles * sizeof(particle_t);

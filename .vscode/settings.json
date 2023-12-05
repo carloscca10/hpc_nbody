@@ -62,6 +62,7 @@
         "compare": "c",
         "concepts": "c",
         "algorithm": "c",
-        "parameters.h": "c"
+        "parameters.h": "c",
+        "nbody_bruteforce.h": "c"
     }
 }
