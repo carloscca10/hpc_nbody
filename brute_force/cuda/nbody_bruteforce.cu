@@ -1,6 +1,7 @@
 #include "nbody_bruteforce.h"
 
 #include <math.h>
+#include <string>
 
 #include <cuda_runtime.h>
 
