@@ -82,6 +82,7 @@ int main ( int argc, char **argv ) {
 	t2 = second();
 	printf("N-Body brute force for %d particles : %f [s] \n",nbr_iterations, (t2-t1));
 	
+	/*
 	printf("BARNES-HUT simulation starting \n");
 	array = read_test_case(argv[1]);
 	t1 = second();
@@ -89,6 +90,7 @@ int main ( int argc, char **argv ) {
 	t2 = second();
 	printf("N-Body barnes-hut for %d particles : %f [s] \n",nbr_particles, (t2-t1));
 	free(array);
+	*/
 
 	printf("Simulation finished \n");
 	return 0;
