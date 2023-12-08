@@ -9,7 +9,7 @@
 #include "parameters.h"
 
 particle_t * read_test_case(const char * fn);
-particle_t getMinMax (particle_t * array, int nbr_particles) ;
+//particle_t getMinMax (particle_t * array, int nbr_particles) ;
 int get_nbr_particles(const char * fn);
 
 #endif /*READER_H_*/
