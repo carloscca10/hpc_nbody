@@ -64,21 +64,21 @@ __global__ void update_positions(particle_t * array, int nbr_particles, double s
 
 
 
-void dummy_call()
-{
-	const int N = 5;
+// void dummy_call()
+// {
+// 	const int N = 5;
 
-        double * dummy_arr;
-        cudaMallocManaged(&dummy_arr, N * sizeof(double));
+//         double * dummy_arr;
+//         cudaMallocManaged(&dummy_arr, N * sizeof(double));
 
-	hello<<<1,N>>>(dummy_arr);
-	cudaDeviceSynchronize();
+// 	hello<<<1,N>>>(dummy_arr);
+// 	cudaDeviceSynchronize();
 
-        for(int i = 0; i < N; ++i)
-            printf("%f\n",dummy_arr[i]);
+//         for(int i = 0; i < N; ++i)
+//             printf("%f\n",dummy_arr[i]);
 
-	cudaFree(dummy_arr);
-}
+// 	cudaFree(dummy_arr);
+// }
 
 
 /*
