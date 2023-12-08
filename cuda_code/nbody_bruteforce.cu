@@ -2,7 +2,7 @@
 
 #include <math.h>
 #include <cuda_runtime.h>
-
+#include <cstdio>
 
 /*
 Compute force (brute force method) of particle p2 on particle p1
@@ -96,10 +96,9 @@ void nbodybruteforce (particle_t * host_array, int nbr_particles, int nbr_iterat
 
     auto error = cudaGetLastError();
     if(error != cudaSuccess) {
-        throw std::runtime_error("Error Launching Kernel: "
-                                 + std::string(cudaGetErrorName(error)) + " - "
-                                 + std::string(cudaGetErrorString(error)));
-	}
+        printf("Error Launching Kernel: %s - %s\n", cudaGetErrorName(error), cudaGetErrorString(error));
+        return; // or handle the error as appropriate
+    }
 
 	//printf("final values of array[7]:\n");
 	printf("final values of array[7]:\n");
