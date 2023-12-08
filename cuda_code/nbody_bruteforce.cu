@@ -16,12 +16,8 @@ __global__ void compute_brute_force(
 	particle_t *p1 = &array[pos];
 
 	double x_sep, y_sep, z_sep, dist_sq, grav_base;
-	double F_x=0.;
-	double F_y=0.;
-	double F_z=0.;
-	double a_x=0.;
-	double a_y=0.;
-	double a_z=0.;
+	double F_x = 0.0, F_y = 0.0, F_z = 0.0;
+	double a_x = 0.0, a_y = 0.0, a_z = 0.0;
 	particle_t tmp;
 
 	for (int i = 0 ; i  < nbr_particles ; i++){
@@ -62,31 +58,12 @@ __global__ void update_positions(particle_t * array, int nbr_particles, double s
 }
 
 
-
-
-// void dummy_call()
-// {
-// 	const int N = 5;
-
-//         double * dummy_arr;
-//         cudaMallocManaged(&dummy_arr, N * sizeof(double));
-
-// 	hello<<<1,N>>>(dummy_arr);
-// 	cudaDeviceSynchronize();
-
-//         for(int i = 0; i < N; ++i)
-//             printf("%f\n",dummy_arr[i]);
-
-// 	cudaFree(dummy_arr);
-// }
-
-
 /*
 Implementation of a simple N-Body code in brute force.
 The parallelization target is CUDA
 Input format is 
 */
-void nbodybruteforce (particle_t * array, int nbr_particles, int nbr_iterations) {
+void nbodybruteforce (particle_t * host_array, int nbr_particles, int nbr_iterations) {
 
 	particle_t *device_array;
 	cudaMallocManaged(&device_array, nbr_particles * sizeof(particle_t));
