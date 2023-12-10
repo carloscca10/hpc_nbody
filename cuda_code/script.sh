@@ -11,6 +11,6 @@
 
 module purge
 module load gcc cuda
+module list
 
-srun nvprof ./nbody-code
-
+srun nvprof $1
