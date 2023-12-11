@@ -64,6 +64,7 @@
         "algorithm": "c",
         "parameters.h": "c",
         "nbody_bruteforce.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "nbody_barneshut.h": "c"
     }
 }
