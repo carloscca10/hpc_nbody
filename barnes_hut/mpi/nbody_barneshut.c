@@ -14,6 +14,9 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations)
 	node * root;
 	particle_t tmp;
 
+	// Compute number of subnodes to be taken care of
+	if (psize <=8)
+
 	printf("Creation of the tree ...");
 	root1 = malloc(sizeof(node));	
 	root2 = malloc(sizeof(node));	

@@ -77,8 +77,8 @@ int main ( int argc, char **argv ) {
 		fprintf(stderr, "Usage: %s [martix-market-filename]\n", argv[0]);
 		exit(1); // exit with an error
 	}
-	else    
-	{ 
+	else
+	{
 		printf("Read data from file \n");
 		nbr_particles = get_nbr_particles(argv[1]);
 		array = read_test_case(argv[1]);
