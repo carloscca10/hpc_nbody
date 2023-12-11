@@ -56,6 +56,13 @@ Code largely inspired by http://www-inf.telecom-sudparis.eu/COURS/CSC5001/new_si
 
 int main ( int argc, char **argv ) {
 
+	MPI_Init(&argc, &argv);
+	int prank, psize;
+
+	MPI_Comm_rank(MPI_COMM_WORLD, &prank);
+	MPI_Comm_size(MPI_COMM_WORLD, &psize);
+	printf("%d: hello (p=%d)\n", prank, psize);
+
 	particle_t * array;
 	int nbr_iterations;
 	int nbr_particles;
@@ -63,7 +70,7 @@ int main ( int argc, char **argv ) {
 
 	nbr_iterations = NBRITERATIONS;
 
-	print_parameters();
+	if (prank==0) print_parameters();
 
 	if (argc < 2)
 	{
@@ -89,12 +96,6 @@ int main ( int argc, char **argv ) {
 	printf("BARNES-HUT simulation starting \n");
 	array = read_test_case(argv[1]);
 */
-	MPI_Init(&argc, &argv);
-	int prank, psize;
-
-	MPI_Comm_rank(MPI_COMM_WORLD, &prank);
-	MPI_Comm_size(MPI_COMM_WORLD, &psize);
-	printf("%d: hello (p=%d)\n", prank, psize);
 
 	printf("BARNES-HUT simulation starting \n");
 	t1 = second();
