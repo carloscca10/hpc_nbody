@@ -48,6 +48,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations)
 	free(root2);
 
 	// print final values of element number 8 of array (array[7])
+	int prank=0;
 	if(prank == 0) {
 	printf("final values of array[7]:\n");
 	printf("x: %lf\n", array[7].x);
