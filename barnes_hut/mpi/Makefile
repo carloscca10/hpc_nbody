@@ -1,4 +1,4 @@
-CC=gcc
+CC=mpicc
 LD=${CC}
 DEBUG=-g
 CFLAGS+=-Wall -Wextra -pedantic -pg $(DEBUG)
