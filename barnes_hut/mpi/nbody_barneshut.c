@@ -1,5 +1,15 @@
 #include "nbody_barneshut.h"
 
+double max(double x, double y) 
+{
+	return ((x) > (y) ? (x) : (y));
+} 
+
+double min(double x, double y) 
+{
+	return ((x) < (y) ? (x) : (y));
+} 
+
 /*
 Implementation of a barnes-hut algorithm for the N-Body problem.
 */
@@ -44,6 +54,22 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations)
 
 	free(root1);
 	free(root2);
+
+	// print final values of element number 8 of array (array[7])
+	printf("final values of array[7]:\n");
+	printf("x: %lf\n", array[7].x);
+	printf("y: %lf\n", array[7].y);
+	printf("z: %lf\n", array[7].z);
+	printf("vx: %lf\n", array[7].vx);
+	printf("vy: %lf\n", array[7].vy);
+	printf("vz: %lf\n", array[7].vz);
+	printf("fx: %lf\n", array[7].fx);
+	printf("fy: %lf\n", array[7].fy);
+	printf("fz: %lf\n", array[7].fz);
+	printf("m: %lf\n", array[7].m);
+	printf("id: %d\n", array[7].id);
+	printf("V: %lf\n", array[7].V);
+
 }
 
 

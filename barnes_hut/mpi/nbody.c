@@ -87,6 +87,7 @@ int main ( int argc, char **argv ) {
 	printf("BARNES-HUT simulation starting \n");
 	array = read_test_case(argv[1]);
 */
+	printf("BARNES-HUT simulation starting \n");
 	t1 = second();
 	nbodybarneshut(array, nbr_particles, nbr_iterations);
 	t2 = second();
