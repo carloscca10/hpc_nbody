@@ -8,6 +8,9 @@
 
 #include "parameters.h"
 
+double max(double x, double y);
+double min(double x, double y);
+
 particle_t * read_test_case(const char * restrict fn);
 particle_t getMinMax (particle_t * array, int nbr_particles) ;
 int get_nbr_particles(const char * restrict fn);

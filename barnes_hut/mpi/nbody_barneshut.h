@@ -32,7 +32,4 @@ void print_tree(node * n);
 void print_node(node * n);
 void print_particle(particle_t * p);
 
-double max(double x, double y);
-double min(double x, double y);
-
 #endif /*NBODYBARNESHUT_H_*/

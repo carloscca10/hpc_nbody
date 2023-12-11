@@ -18,6 +18,15 @@ where :
 	V		: potential (not used in this simulation)
 */
 
+double max(double x, double y) 
+{
+	return ((x) > (y) ? (x) : (y));
+} 
+
+double min(double x, double y) 
+{
+	return ((x) < (y) ? (x) : (y));
+} 
 
 particle_t * read_test_case(const char * restrict fn)
 {

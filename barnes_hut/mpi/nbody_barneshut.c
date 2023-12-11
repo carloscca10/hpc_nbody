@@ -1,14 +1,5 @@
 #include "nbody_barneshut.h"
 
-double max(double x, double y) 
-{
-	return ((x) > (y) ? (x) : (y));
-} 
-
-double min(double x, double y) 
-{
-	return ((x) < (y) ? (x) : (y));
-} 
 
 /*
 Implementation of a barnes-hut algorithm for the N-Body problem.
