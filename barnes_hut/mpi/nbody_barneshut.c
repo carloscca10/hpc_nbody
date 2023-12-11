@@ -1,4 +1,5 @@
 #include "nbody_barneshut.h"
+#include <mpi.h>
 
 
 /*

@@ -8,6 +8,8 @@
 #include "nbody_barneshut.h"
 #include "reader.h"
 #include <sys/time.h>
+#include <mpi.h>
+
 
 void print_parameters(void){
 	printf("====================================================\n");
