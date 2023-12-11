@@ -4,7 +4,7 @@ DEBUG=-g
 CFLAGS+=-Wall -Wextra -pedantic -pg $(DEBUG)
 LDFLAGS+=-lm -pg $(DEBUG)
 
-OBJS_NBODY=nbody.o nbody_bruteforce.o reader.o nbody_barneshut.o
+OBJS_NBODY=nbody.o reader.o nbody_barneshut.o
 
 all: nbody-code
 
