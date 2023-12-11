@@ -87,6 +87,13 @@ int main ( int argc, char **argv ) {
 	printf("BARNES-HUT simulation starting \n");
 	array = read_test_case(argv[1]);
 */
+	MPI_Init(&argc, &argv);
+	int prank, psize;
+
+	MPI_Comm_rank(MPI_COMM_WORLD, &prank);
+	MPI_Comm_size(MPI_COMM_WORLD, &psize);
+	printf("%d: hello (p=%d)\n", prank, psize);
+
 	printf("BARNES-HUT simulation starting \n");
 	t1 = second();
 	nbodybarneshut(array, nbr_particles, nbr_iterations);
@@ -96,6 +103,7 @@ int main ( int argc, char **argv ) {
 
 
 	printf("Simulation finished \n");
+	MPI_Finalize();
 	return 0;
 }
 
