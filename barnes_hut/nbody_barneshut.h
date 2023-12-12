@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 #include "parameters.h"
-#include "nbody_bruteforce.h"
+//#include "nbody_bruteforce.h"
 #include "reader.h"
 #include "math.h"
 

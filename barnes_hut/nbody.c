@@ -4,10 +4,12 @@
 #include <stdarg.h>
 #include <stddef.h>
 #include "parameters.h"
-#include "nbody_bruteforce.h"
+//#include "nbody_bruteforce.h"
 #include "nbody_barneshut.h"
 #include "reader.h"
 #include <sys/time.h>
+#include <mpi.h>
+
 
 void print_parameters(void){
 	printf("====================================================\n");
@@ -54,6 +56,13 @@ Code largely inspired by http://www-inf.telecom-sudparis.eu/COURS/CSC5001/new_si
 
 int main ( int argc, char **argv ) {
 
+	MPI_Init(&argc, &argv);
+	int prank, psize;
+
+	MPI_Comm_rank(MPI_COMM_WORLD, &prank);
+	MPI_Comm_size(MPI_COMM_WORLD, &psize);
+	printf("%d: hello (p=%d)\n", prank, psize);
+
 	particle_t * array;
 	int nbr_iterations;
 	int nbr_particles;
@@ -61,15 +70,15 @@ int main ( int argc, char **argv ) {
 
 	nbr_iterations = NBRITERATIONS;
 
-	print_parameters();
+	if (prank==0) print_parameters();
 
 	if (argc < 2)
 	{
 		fprintf(stderr, "Usage: %s [martix-market-filename]\n", argv[0]);
 		exit(1); // exit with an error
 	}
-	else    
-	{ 
+	else
+	{
 		printf("Read data from file \n");
 		nbr_particles = get_nbr_particles(argv[1]);
 		array = read_test_case(argv[1]);
@@ -87,6 +96,8 @@ int main ( int argc, char **argv ) {
 	printf("BARNES-HUT simulation starting \n");
 	array = read_test_case(argv[1]);
 */
+
+	printf("BARNES-HUT simulation starting \n");
 	t1 = second();
 	nbodybarneshut(array, nbr_particles, nbr_iterations);
 	t2 = second();
@@ -95,6 +106,7 @@ int main ( int argc, char **argv ) {
 
 
 	printf("Simulation finished \n");
+	MPI_Finalize();
 	return 0;
 }
 
