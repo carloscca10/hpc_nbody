@@ -1,5 +1,6 @@
 #include "nbody_barneshut.h"
 #include <mpi.h>
+#include <cmath>
 
 
 /*
@@ -495,4 +496,8 @@ void print_particle(particle_t * p){
 }
 
 
-
+// get dimensions of the space for each rank
+void location_rank (node root, node * rank_node, int prank, int psize) {
+	int div = cbrt(psize);
+	rank_node.maxx = root.xmin + (root.xmax - root.xmin) / div * (prank % 3 + 1);
+}
