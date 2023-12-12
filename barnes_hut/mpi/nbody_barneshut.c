@@ -1,8 +1,5 @@
 #include "nbody_barneshut.h"
-#include <cmath>
 #include <mpi.h>
-
-
 
 /*
 Implementation of a barnes-hut algorithm for the N-Body problem.
