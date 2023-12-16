@@ -26,7 +26,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	construct_bh_tree(array,root1, nbr_particles);
 	printf("OK \n");
 	printf("Init forces ...");
-	print_particle(&array[7], prank);
+	print_particle(&array[7], prank, psize);
 	// compute_force_in_node(root1, root1);
 	printf(" OK \n");
 	for (n = 0 ; n  < nbr_iterations ; n++){
@@ -56,7 +56,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 
 	// print final values of element number 8 of array (array[7])
 	//if(prank == 0) {
-	print_particle(&array[7], prank);
+	print_particle(&array[7], prank, psize);
 	//}
 }
 
@@ -521,14 +521,13 @@ void print_node(node * n){
 /*
 print a particle 
 */
-void print_particle(particle_t * p, int prank){
-	printf("Prank %d | ", prank);
+void print_particle(particle_t * p, int prank, int psize){
+	printf("Prank %d/%d | ", prank, psize);
 	printf("[Particle %d]",p->id);
 	printf(" position ([%f:%f:%f])",p->x, p->y, p->z);
 	printf(" M = %f", p->m);
 	printf("\n");
 }
-
 
 /*
 OTHER MPI FUNCTIONS

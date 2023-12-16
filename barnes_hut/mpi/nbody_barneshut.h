@@ -30,7 +30,7 @@ void init_node(node * n, node * parent, double minx, double maxx, double miny, d
 // Utilities
 void print_tree(node * n);
 void print_node(node * n);
-void print_particle(particle_t * p, int prank);
+void print_particle(particle_t * p, int prank, int psize);
 
 // MPI
 void gather_force_vector(particle_t *array, int nbr_particles, double *forces);
