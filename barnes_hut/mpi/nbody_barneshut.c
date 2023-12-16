@@ -37,9 +37,9 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		compute_force_in_node(root1, root1, prank, psize);
 		compute_bh_force(root1, prank, psize);
 
-		gather_force_vector(array, nbr_particles, forces);
-		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
-		broadcast_force_vector(array, nbr_particles, forces);
+		//gather_force_vector(array, nbr_particles, forces);
+		//MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
+		//broadcast_force_vector(array, nbr_particles, forces);
 
 		move_all_particles(root2, root1, step);
 
@@ -164,17 +164,30 @@ void clean_tree(node * root) {
 compute the forces on the BH tree
 */
 
-void compute_bh_force(node * n, int prank, int psize) {
+// void compute_bh_force(node * n, int prank, int psize) {
+// 	int i;
+// 	if(n->children != NULL){
+// 		for (i = 0; i < 8; i++){
+// 			compute_bh_force(&n->children[i], prank, psize);
+// 		}
+// 	}else if (n->particle->id % psize == prank){
+// 		particle_t * p = n->particle;
+// 		compute_force_particle(n,p);
+// 	}
+// }
+
+void compute_bh_force(node * n) {
 	int i;
 	if(n->children != NULL){
 		for (i = 0; i < 8; i++){
-			compute_bh_force(&n->children[i], prank, psize);
+			compute_bh_force(&n->children[i]);
 		}
-	}else if (n->particle->id % psize == prank){
+	}else{
 		particle_t * p = n->particle;
 		compute_force_particle(n,p);
 	}
 }
+
 
 /*
 Compute force of node n on particle p
@@ -233,11 +246,30 @@ void compute_force(particle_t *p, double xpos, double ypos,  double zpos, double
 /*
 Compute all the forces in the particles
 */
-void compute_force_in_node(node *n,node *root, int prank, int psize) {
+
+// void compute_force_in_node(node *n,node *root, int prank, int psize) {
+// 	int i;
+// 	if(n==NULL) return;
+
+// 	if((n->particle != NULL)&&(n->children == NULL)&&(n->particle->id % psize == prank)) {
+// 		particle_t*p = n->particle;
+// 		p->fx = 0;
+// 		p->fy = 0;
+// 		p->fz = 0;
+// 		compute_force_particle(root, p);
+// 	}
+// 	if(n->children != NULL) {
+// 		for(i=0; i<8; i++) {
+// 			compute_force_in_node(&n->children[i], root, prank, psize);
+// 		}
+// 	}
+// }
+
+void compute_force_in_node(node *n,node *root) {
 	int i;
 	if(n==NULL) return;
 
-	if((n->particle != NULL)&&(n->children == NULL)&&(n->particle->id % psize == prank)) {
+	if((n->particle != NULL)&&(n->children == NULL)) {
 		particle_t*p = n->particle;
 		p->fx = 0;
 		p->fy = 0;
@@ -246,11 +278,10 @@ void compute_force_in_node(node *n,node *root, int prank, int psize) {
 	}
 	if(n->children != NULL) {
 		for(i=0; i<8; i++) {
-			compute_force_in_node(&n->children[i], root, prank, psize);
+			compute_force_in_node(&n->children[i], root);
 		}
 	}
 }
-
 
 
 
