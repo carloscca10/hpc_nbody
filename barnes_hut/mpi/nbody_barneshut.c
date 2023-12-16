@@ -14,6 +14,10 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	particle_t tmp;
 	double forces[3 * nbr_particles];
 
+	for(int i = 0; i < 3*nbr_particles; i++) {
+		forces[i] = 0;
+	}
+
 	//printf("Creation of the tree ...");
 	root1 = malloc(sizeof(node));	
 	root2 = malloc(sizeof(node));	
@@ -35,10 +39,10 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		compute_force_in_node(root1, root1, prank, psize);
 		compute_bh_force(root1, prank, psize);
 
-		int i;
-		for(i=0; i<nbr_particles; i++) {
-			printf("%d / %d -- Particle %i | %i -> (%f, %f, %f) \n", prank, psize, array[i].id, array[i].mpi_id, array[i].fx, array[i].fy, array[i].fz);
-		}
+		// int i;
+		// for(i=0; i<nbr_particles; i++) {
+		// 	printf("%d / %d -- Particle %i | %i -> (%f, %f, %f) \n", prank, psize, array[i].id, array[i].mpi_id, array[i].fx, array[i].fy, array[i].fz);
+		// }
 
 		gather_force_vector(array, nbr_particles, forces);
 		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
