@@ -55,9 +55,9 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	free(root2);
 
 	// print final values of element number 8 of array (array[7])
-	if(prank == 0) {
+	//if(prank == 0) {
 	print_particle(&array[7]);
-	}
+	//}
 }
 
 /*
