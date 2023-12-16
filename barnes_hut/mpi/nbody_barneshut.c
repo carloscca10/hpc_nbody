@@ -111,7 +111,7 @@ void move_particle(node * root, node * n, particle_t * p, double step) {
 	p->x += p->vx * step;	 
 	p->y += p->vy * step;	 
 	p->z += p->vz * step;	 
-		
+
 	if (! is_particle_out_of_scope(p,root)) {
 		insert_particle(p,root);
 	}else{
@@ -246,7 +246,7 @@ void compute_force_in_node(node *n,node *root, int prank, int psize) {
 		p->fx = 0;
 		p->fy = 0;
 		p->fz = 0;
-		if(n->particle->mpi_id % psize == prank){
+		if(n->particle->id % psize == prank){
 			compute_force_particle(root, p);
 		}
 	}
