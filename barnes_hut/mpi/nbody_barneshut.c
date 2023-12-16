@@ -248,12 +248,14 @@ void compute_force_in_node(node *n,node *root, int prank, int psize) {
 	int i;
 	if(n==NULL) return;
 
-	if((n->particle != NULL)&&(n->children == NULL)&&(n->particle->id % psize == prank)) {
+	if((n->particle != NULL)&&(n->children == NULL)) {
 		particle_t*p = n->particle;
 		p->fx = 0;
 		p->fy = 0;
 		p->fz = 0;
-		compute_force_particle(root, p);
+		if(n->particle->id % psize == prank){
+			compute_force_particle(root, p);
+		}
 	}
 	if(n->children != NULL) {
 		for(i=0; i<8; i++) {
