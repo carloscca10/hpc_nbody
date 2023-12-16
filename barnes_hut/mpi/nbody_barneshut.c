@@ -159,7 +159,7 @@ void clean_tree(node * root) {
 
 
 /*
-compute the forces on the BH tree
+compute the forces on the BH tree (I think it is the force by other particles in its sub-tree)
 */
 
 void compute_bh_force(node * n, int prank, int psize) {
@@ -604,5 +604,8 @@ void broadcast_force_vector(particle_t *array, int nbr_particles, double *forces
 		array[i].fx = forces[3*i];    // x-component of force for particle i
 		array[i].fy = forces[3*i + 1]; // y-component of force for particle i
 		array[i].fz = forces[3*i + 2]; // z-component of force for particle i
+	}
+	for(i = 0; i < nbr_particles; i++) {
+		printf("Particle %d: (%f, %f, %f)\n", i, array[i].fx, array[i].fy, array[i].fz);
 	}
 }
