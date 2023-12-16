@@ -288,50 +288,51 @@ void compute_force(particle_t *p, double xpos, double ypos,  double zpos, double
 Compute all the forces in the particles
 */
 
-// void compute_force_in_node(node *n,node *root, int prank, int psize) {
-// 	int i;
-// 	if(n==NULL) return;
+void compute_force_in_node(node *n,node *root, int prank, int psize) {
+	int i;
+	if(n==NULL) return;
 
-// 	if((n->particle != NULL)&&(n->children == NULL)) {
-// 		particle_t*p = n->particle;
-// 		p->fx = 0;
-// 		p->fy = 0;
-// 		p->fz = 0;
-// 		//if(n->particle->mpi_id % psize == prank){
-// 			compute_force_particle(root, p, prank, psize);
-// 		//}
-// 	}
-// 	if(n->children != NULL) {
-// 		for(i=0; i<8; i++) {
-// 			compute_force_in_node(&n->children[i], root, prank, psize);
-// 		}
-// 	}
-// }
-
-void compute_force_in_node(node *n, node *root, int prank, int psize) {
-    int i;
-    if (n == NULL) return;
-
-    if ((n->particle != NULL) && (n->children == NULL)) {
-        particle_t *particles = n->particle;
-
-        for (i = 0; i < n->sub_nbr_particles; i++) {
-            particle_t *p = &particles[i];
-                p->fx = 0;
-                p->fy = 0;
-                p->fz = 0;
-			if (p->mpi_id % psize == prank) {
-                compute_force_particle(root, p);
-            }
-        }
-    }
-
-    if (n->children != NULL) {
-        for (i = 0; i < 8; i++) {
-            compute_force_in_node(&n->children[i], root, prank, psize);
-        }
-    }
+	if((n->particle != NULL)&&(n->children == NULL)) {
+		particle_t*p = n->particle;
+		p->fx = 0;
+		p->fy = 0;
+		p->fz = 0;
+		//if(n->particle->mpi_id % psize == prank){
+			compute_force_particle(root, p, prank, psize);
+		//}
+	}
+	if(n->children != NULL) {
+		for(i=0; i<8; i++) {
+			compute_force_in_node(&n->children[i], root, prank, psize);
+		}
+	}
 }
+
+
+// void compute_force_in_node(node *n, node *root, int prank, int psize) {
+//     int i;
+//     if (n == NULL) return;
+
+//     if ((n->particle != NULL) && (n->children == NULL)) {
+//         particle_t *particles = n->particle;
+
+//         for (i = 0; i < n->sub_nbr_particles; i++) {
+//             particle_t *p = &particles[i];
+//                 p->fx = 0;
+//                 p->fy = 0;
+//                 p->fz = 0;
+// 			if (p->mpi_id % psize == prank) {
+//                 compute_force_particle(root, p);
+//             }
+//         }
+//     }
+
+//     if (n->children != NULL) {
+//         for (i = 0; i < 8; i++) {
+//             compute_force_in_node(&n->children[i], root, prank, psize);
+//         }
+//     }
+// }
 
 
 
