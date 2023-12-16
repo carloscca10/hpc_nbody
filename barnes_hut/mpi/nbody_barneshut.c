@@ -227,6 +227,7 @@ void compute_force_particle(node *n, particle_t *p, int prank, int psize) {
 
     // Check if the particle's id is in the process before processing
     for (j = 0; j < n->sub_nbr_particles; j++) {
+		printf("Num particles: %d\n", n->sub_nbr_particles)
         // Only process particles with an even id
         if (p[j].mpi_id % psize == prank) {
             if ((n->particle != NULL) && (n->children == NULL)) {
