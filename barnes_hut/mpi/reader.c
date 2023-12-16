@@ -72,7 +72,7 @@ Line 2 -> N	: x : y : z : vx : vy : vz : m : ID : V
 		mat[i].fx = 0.;
 		mat[i].fy = 0.;
 		mat[i].fz = 0.;
-		//mat[i].mpi_id = i;
+		mat[i].mpi_id = i;
 	}
 		//printf("OK\n");
 

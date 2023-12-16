@@ -176,7 +176,7 @@ void compute_bh_force(node * n, int prank, int psize) {
 			compute_bh_force(&n->children[i], prank, psize);
 		}
 	}else{
-		if(n->particle->id % psize == prank){
+		if(n->particle->mpi_id % psize == prank){
 			particle_t * p = n->particle;
 			compute_force_particle(n,p);
 		}
@@ -251,7 +251,7 @@ void compute_force_in_node(node *n,node *root, int prank, int psize) {
 		p->fx = 0;
 		p->fy = 0;
 		p->fz = 0;
-		if(n->particle->id % psize == prank){
+		if(n->particle->mpi_id % psize == prank){
 			compute_force_particle(root, p);
 		}
 	}
