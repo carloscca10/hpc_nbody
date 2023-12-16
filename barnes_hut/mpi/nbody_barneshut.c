@@ -197,7 +197,7 @@ void compute_force_particle(node *n, particle_t *p, int prank, int psize) {
     if ((n == NULL) || (n->sub_nbr_particles == 0)) { return; }
 
     // Check if the particle's id is in the process before processing
-    if (p->id % % psize == prank) {
+    if (p->mpi_id % psize == prank) {
         if ((n->particle != NULL) && (n->children == NULL)) {
             compute_force(p, n->centerx, n->centery, n->centerz, n->mass);
         } else {
