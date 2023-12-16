@@ -36,6 +36,7 @@ struct particles{
 	double fz;
 	double m;
 	int id;
+	int mpi_id;
 	double V;
 	node * node;
 };
