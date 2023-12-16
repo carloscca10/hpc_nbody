@@ -36,11 +36,11 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		compute_bh_force(root1);
 		//print_particle(&array[7], prank, psize);
 		printf("%d: before gather \n", prank);
-		gather_force_vector(array, nbr_particles, forces);
+		//gather_force_vector(array, nbr_particles, forces);
 		printf("%d: before all reduce \n", prank);
-		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
+		//MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
 		printf("%d: before broadcast \n", prank);
-		broadcast_force_vector(array, nbr_particles, forces);
+		//broadcast_force_vector(array, nbr_particles, forces);
 		printf("%d: before move particles \n", prank);
 		move_all_particles(root2, root1, step);
 		printf("%d: before swap \n", prank);
