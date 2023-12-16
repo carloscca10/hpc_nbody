@@ -230,7 +230,7 @@ void compute_force_particle(node *n, particle_t *p, int prank, int psize) {
         // Only process particles with an even id
         if (p[j].mpi_id % psize == prank) {
             if ((n->particle != NULL) && (n->children == NULL)) {
-                compute_force(p[j], n->centerx, n->centery, n->centerz, n->mass);
+                compute_force(&p[j], n->centerx, n->centery, n->centerz, n->mass);
             } else {
                 size = n->maxx - n->minx;
                 diffx = n->centerx - p[j].x;
@@ -240,7 +240,7 @@ void compute_force_particle(node *n, particle_t *p, int prank, int psize) {
 
 				//	The particle is far away. Use an approximation of the force
                 if (size / distance < THETA) {
-                    compute_force(p[j], n->centerx, n->centery, n->centerz, n->mass);
+                    compute_force(&p[j], n->centerx, n->centery, n->centerz, n->mass);
                 } else {
 				//  Otherwise, run the procedure recursively on each of the current node's children.
                     for (i = 0; i < 8; i++) {
