@@ -31,17 +31,22 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	// printf(" OK \n");
 	//printf("Compute forces ...\n");
 	for (n = 0 ; n  < nbr_iterations ; n++){
-		//printf("%d: ITERATION %d \n",prank, n);
+		printf("%d: ITERATION %d \n",prank, n);
 		printf("\n\nhello 1\n\n");
 		compute_force_in_node(root1, root1, prank, psize);
 		printf("\n\nhello 2\n\n");
 		compute_bh_force(root1, prank, psize);
 
+		printf("\n\nhello 3\n\n");
 		gather_force_vector(array, nbr_particles, forces);
+		printf("\n\nhello 4\n\n");
 		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
+		printf("\n\nhello 5\n\n");
 		broadcast_force_vector(array, nbr_particles, forces);
-
+		
+		printf("\n\nhello 6\n\n");
 		move_all_particles(root2, root1, step);
+		printf("\n\nhello 7\n\n");
 
 		root = root1;
 		root1 = root2;
