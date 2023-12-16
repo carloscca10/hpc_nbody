@@ -28,9 +28,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	construct_bh_tree(array,root1, nbr_particles);
 	// printf("OK \n");
 	// printf("Init forces ...");
-	printf("hello\n");
-	print_particle(&array[7], prank, psize);
-	printf("hello\n");
+	//print_particle(&array[7], prank, psize);
 	// compute_force_in_node(root1, root1);
 	// printf(" OK \n");
 	for (n = 0 ; n  < nbr_iterations ; n++){

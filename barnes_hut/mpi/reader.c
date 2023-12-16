@@ -47,7 +47,7 @@ particle_t * read_test_case(const char * restrict fn)
 	}
 	rewind(f);
 	fscanf(f, "%d", &nbr_particles);
-	printf("Reading file ... ");
+	//printf("Reading file ... ");
 	mat = malloc(nbr_particles*sizeof(particle_t));
 
 /*

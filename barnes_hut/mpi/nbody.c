@@ -61,7 +61,7 @@ int main ( int argc, char **argv ) {
 
 	MPI_Comm_rank(MPI_COMM_WORLD, &prank);
 	MPI_Comm_size(MPI_COMM_WORLD, &psize);
-	printf("%d: hello (p=%d)\n", prank, psize);
+	//printf("%d: hello (p=%d)\n", prank, psize);
 
 	particle_t * array;
 	int nbr_iterations;
@@ -82,7 +82,7 @@ int main ( int argc, char **argv ) {
 		//printf("Read data from file \n");
 		nbr_particles = get_nbr_particles(argv[1]);
 		array = read_test_case(argv[1]);
-		printf("Number of particles : %d\n",nbr_particles);
+		//printf("Number of particles : %d\n",nbr_particles);
 	}
 
 	/*
