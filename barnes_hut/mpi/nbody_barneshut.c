@@ -12,7 +12,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	node * root2;
 	node * root;
 	particle_t tmp;
-	double forces[3 * nbr_particles];
+	//double forces[3 * nbr_particles];
 
 	// Compute number of subnodes to be taken care of
 	//if (psize <=8)
