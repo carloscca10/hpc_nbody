@@ -35,9 +35,9 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		compute_force_in_node(root1, root1, prank, psize);
 		compute_bh_force(root1, prank, psize);
 
-		// gather_force_vector(array, nbr_particles, forces);
-		// MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
-		// broadcast_force_vector(array, nbr_particles, forces);
+		gather_force_vector(array, nbr_particles, forces);
+		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
+		broadcast_force_vector(array, nbr_particles, forces);
 		
 		move_all_particles(root2, root1, step);
 
@@ -173,9 +173,9 @@ void compute_bh_force(node * n, int prank, int psize) {
 		//if(n->particle->mpi_id % psize == prank){
 		for (i = 0; i < n->sub_nbr_particles; i++) {
 			particle_t *p = &particles[i];
-			//if (p->mpi_id % psize == prank) {
+			if (p->mpi_id % psize == prank) {
 				compute_force_particle(n, p);
-			//}
+			}
 		//}
 		}
 	}
@@ -321,9 +321,9 @@ void compute_force_in_node(node *n, node *root, int prank, int psize) {
                 p->fx = 0;
                 p->fy = 0;
                 p->fz = 0;
-			//if (p->mpi_id % psize == prank) {
+			if (p->mpi_id % psize == prank) {
                 compute_force_particle(root, p);
-            //}
+            }
         }
     }
 
@@ -604,8 +604,5 @@ void broadcast_force_vector(particle_t *array, int nbr_particles, double *forces
 		array[i].fx = forces[3*i];    // x-component of force for particle i
 		array[i].fy = forces[3*i + 1]; // y-component of force for particle i
 		array[i].fz = forces[3*i + 2]; // z-component of force for particle i
-	}
-	for(i = 0; i < nbr_particles; i++) {
-		printf("Particle %d: (%f, %f, %f)\n", i, array[i].fx, array[i].fy, array[i].fz);
 	}
 }
