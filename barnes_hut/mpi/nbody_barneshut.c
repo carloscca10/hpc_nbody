@@ -162,25 +162,6 @@ void clean_tree(node * root) {
 compute the forces on the BH tree
 */
 
-// void compute_bh_force(node * n, int prank, int psize) {
-// 	int i;
-// 	if(n->children != NULL){
-// 		for (i = 0; i < 8; i++){
-// 			compute_bh_force(&n->children[i], prank, psize);
-// 		}
-// 	}else{
-// 		particle_t *particles = n->particle;
-// 		//if(n->particle->mpi_id % psize == prank){
-// 		for (i = 0; i < n->sub_nbr_particles; i++) {
-// 			particle_t *p = &particles[i];
-// 			if (p->mpi_id % psize == prank) {
-// 				compute_force_particle(n, p);
-// 			}
-// 		//}
-// 		}
-// 	}
-// }
-
 void compute_bh_force(node * n, int prank, int psize) {
 	int i;
 	if(n->children != NULL){
@@ -188,10 +169,29 @@ void compute_bh_force(node * n, int prank, int psize) {
 			compute_bh_force(&n->children[i], prank, psize);
 		}
 	}else{
-		particle_t * p = n->particle;
-		compute_force_particle(n,p);
+		particle_t *particles = n->particle;
+		//if(n->particle->mpi_id % psize == prank){
+		for (i = 0; i < n->sub_nbr_particles; i++) {
+			particle_t *p = &particles[i];
+			//if (p->mpi_id % psize == prank) {
+				compute_force_particle(n, p);
+			//}
+		//}
+		}
 	}
 }
+
+// void compute_bh_force(node * n, int prank, int psize) {
+// 	int i;
+// 	if(n->children != NULL){
+// 		for (i = 0; i < 8; i++){
+// 			compute_bh_force(&n->children[i], prank, psize);
+// 		}
+// 	}else{
+// 		particle_t * p = n->particle;
+// 		compute_force_particle(n,p);
+// 	}
+// }
 
 
 /*
