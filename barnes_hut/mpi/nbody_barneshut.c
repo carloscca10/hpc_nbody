@@ -38,8 +38,8 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		compute_bh_force(root1, prank, psize);
 		move_all_particles(root2, root1, step);
 
-		
-		gather_force_vector(array, nbr_particles, &forces);
+
+		gather_force_vector(&array, nbr_particles, &forces);
 		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
 		broadcast_force_vector(&array, nbr_particles, forces);
 
@@ -505,7 +505,7 @@ void print_particle(particle_t * p){
 OTHER MPI FUNCTIONS
 */
 
-void gather_force_vector(particle_t array, int nbr_particles, double *forces) {
+void gather_force_vector(particle_t *array, int nbr_particles, double *forces) {
     int i;
     for (i = 0; i < nbr_particles; i++) {
         forces[3*i] = array[i].fx;    // x-component of force for particle i
