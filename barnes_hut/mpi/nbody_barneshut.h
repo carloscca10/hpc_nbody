@@ -35,5 +35,4 @@ void print_particle(particle_t * p, int prank, int psize);
 // MPI
 void gather_force_vector(particle_t *array, int nbr_particles, double *forces);
 void broadcast_force_vector(particle_t *array, int nbr_particles, double *forces);
-void get_mpi_ids(particle_t *array, int nbr_particles);
 #endif /*NBODYBARNESHUT_H_*/

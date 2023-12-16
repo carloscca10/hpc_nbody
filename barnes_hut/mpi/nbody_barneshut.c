@@ -14,8 +14,6 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	particle_t tmp;
 	double forces[3 * nbr_particles];
 
-	get_mpi_ids(array, nbr_particles);
-
 	// printf("Creation of the tree ...");
 	root1 = malloc(sizeof(node));	
 	root2 = malloc(sizeof(node));	
@@ -542,12 +540,5 @@ void broadcast_force_vector(particle_t *array, int nbr_particles, double *forces
 		array[i].fx = forces[3*i];    // x-component of force for particle i
 		array[i].fy = forces[3*i + 1]; // y-component of force for particle i
 		array[i].fz = forces[3*i + 2]; // z-component of force for particle i
-	}
-}
-
-void get_mpi_ids(particle_t *array, int nbr_particles) {
-	int i;
-	for (i = 0; i < nbr_particles; i++) {
-		array[i].mpi_id = i;
 	}
 }
