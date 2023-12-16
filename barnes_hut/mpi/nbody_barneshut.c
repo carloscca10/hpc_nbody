@@ -43,11 +43,12 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		broadcast_force_vector(array, nbr_particles, forces);
 		printf("%d: before move particles \n", prank);
 		move_all_particles(root2, root1, step);
-
+		printf("%d: before swap \n", prank);
 		root = root1;
 		root1 = root2;
 		root2 = root;
 		clean_tree(root2);
+		printf("%d: end iteration \n", prank);
 	}
 
 	printf("It remains %d particles in space \n",root1->sub_nbr_particles);	
