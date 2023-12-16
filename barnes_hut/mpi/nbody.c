@@ -79,7 +79,7 @@ int main ( int argc, char **argv ) {
 	}
 	else
 	{
-		printf("Read data from file \n");
+		//printf("Read data from file \n");
 		nbr_particles = get_nbr_particles(argv[1]);
 		array = read_test_case(argv[1]);
 		printf("Number of particles : %d\n",nbr_particles);

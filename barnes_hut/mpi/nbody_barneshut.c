@@ -14,21 +14,21 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	particle_t tmp;
 	double forces[3 * nbr_particles];
 
-	printf("Creation of the tree ...");
+	// printf("Creation of the tree ...");
 	root1 = malloc(sizeof(node));	
 	root2 = malloc(sizeof(node));	
 	tmp = getMinMax(array, nbr_particles);
 	init_tree(&tmp, root1);	
 	init_tree(&tmp, root2);	
-	printf("OK \n");
+	// printf("OK \n");
 
-	printf("Construction of the tree from file ...");
+	// printf("Construction of the tree from file ...");
 	construct_bh_tree(array,root1, nbr_particles);
-	printf("OK \n");
-	printf("Init forces ...");
+	// printf("OK \n");
+	// printf("Init forces ...");
 	print_particle(&array[7], prank, psize);
 	// compute_force_in_node(root1, root1);
-	printf(" OK \n");
+	// printf(" OK \n");
 	for (n = 0 ; n  < nbr_iterations ; n++){
 		//printf("ITERATION %d \n",n);
 		compute_force_in_node(root1, root1, prank, psize);
