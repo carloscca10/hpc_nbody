@@ -173,7 +173,7 @@ void compute_bh_force(node * n, int prank, int psize) {
 		//if(n->particle->mpi_id % psize == prank){
 		for (i = 0; i < n->sub_nbr_particles; i++) {
 			particle_t *p = &particles[i];
-			if (p->id % psize == prank) {
+			if (p->mpi_id % psize == prank) {
 				compute_force_particle(n, p);
 			}
 		//}
@@ -322,7 +322,7 @@ void compute_force_in_node(node *n, node *root, int prank, int psize) {
 			p->fy = 0;
 			p->fz = 0;
 			//printf("Particle %i | %i\n", p->id, p->mpi_id);
-			if (p->id % psize == prank) {
+			if (p->mpi_id % psize == prank) {
 				compute_force_particle(root, p);
 			}
         }
