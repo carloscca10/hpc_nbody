@@ -298,7 +298,7 @@ void compute_force_in_node(node *n,node *root, int prank, int psize) {
 		p->fy = 0;
 		p->fz = 0;
 		//if(n->particle->mpi_id % psize == prank){
-			compute_force_particle(root, p, prank, psize);
+			compute_force_particle(root, p);
 		//}
 	}
 	if(n->children != NULL) {
