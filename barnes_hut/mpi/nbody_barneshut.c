@@ -4,7 +4,7 @@
 /*
 Implementation of a barnes-hut algorithm for the N-Body problem.
 */
-void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations) 
+void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, int prank, int psize) 
 {
 	int n;
 	double step = TIMESTEP;
@@ -33,8 +33,8 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations)
 	printf(" OK \n");
 	for (n = 0 ; n  < nbr_iterations ; n++){
 		printf("ITERATION %d \n",n);
-		compute_force_in_node(root1, root1);
-		compute_bh_force(root1);
+		compute_force_in_node(root1, root1, prank, psize);
+		compute_bh_force(root1, prank, psize);
 		move_all_particles(root2, root1, step);
 
 		double forces = gather_force_vector(array);
@@ -56,7 +56,6 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations)
 	free(root2);
 
 	// print final values of element number 8 of array (array[7])
-	int prank=0;
 	if(prank == 0) {
 	print_particle(&array[7]);
 	}
@@ -167,7 +166,7 @@ void compute_bh_force(node * n, int prank, int psize) {
 	int i;
 	if(n->children != NULL){
 		for (i = 0; i < 8; i++){
-			compute_bh_force(&n->children[i]);
+			compute_bh_force(&n->children[i], prank, psize);
 		}
 	}else if (n->particle->id % psize == prank){
 		particle_t * p = n->particle;
@@ -245,7 +244,7 @@ void compute_force_in_node(node *n,node *root, int prank, int psize) {
 	}
 	if(n->children != NULL) {
 		for(i=0; i<8; i++) {
-			compute_force_in_node(&n->children[i], root);
+			compute_force_in_node(&n->children[i], root, prank, psize);
 		}
 	}
 }
