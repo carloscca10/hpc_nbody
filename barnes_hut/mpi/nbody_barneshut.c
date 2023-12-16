@@ -14,7 +14,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	particle_t tmp;
 	double forces[3 * nbr_particles];
 
-	print("num part: %d", nbr_particles);
+	printf("num part: %d", nbr_particles);
 	for (n = 0; n < nbr_particles; n++) {
 		printf("id: %d\n", array[n].id);
 	}
