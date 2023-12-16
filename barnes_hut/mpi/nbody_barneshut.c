@@ -176,7 +176,7 @@ compute the forces on the BH tree
 // 	}
 // }
 
-void compute_bh_force(node * n) {
+void compute_bh_force(node * n, int prank, int psize) {
 	int i;
 	if(n->children != NULL){
 		for (i = 0; i < 8; i++){
@@ -265,7 +265,7 @@ Compute all the forces in the particles
 // 	}
 // }
 
-void compute_force_in_node(node *n,node *root) {
+void compute_force_in_node(node *n,node *root, int prank, int psize) {
 	int i;
 	if(n==NULL) return;
 
