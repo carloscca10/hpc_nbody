@@ -11,7 +11,7 @@
 
 void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, int prank, int psize) ;
 void construct_bh_tree(particle_t * array, node * root, int nbr_particles);
-void compute_bh_force(node * n, int prank, int psize) ;
+void compute_bh_force(node * n) ;
 void compute_force(particle_t *p, double xpos, double ypos,  double zpos, double mass) ;
 void compute_force_particle(node * n, particle_t * p);
 void compute_force_in_node(node *n,node *root, int prank, int psize);

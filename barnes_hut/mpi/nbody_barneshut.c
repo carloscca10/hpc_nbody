@@ -32,7 +32,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	for (n = 0 ; n  < nbr_iterations ; n++){
 		printf("ITERATION %d \n",n);
 		compute_force_in_node(root1, root1, prank, psize);
-		compute_bh_force(root1, prank, psize);
+		compute_bh_force(root1);
 
 		gather_force_vector(array, nbr_particles, forces);
 		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
@@ -161,23 +161,11 @@ void clean_tree(node * root) {
 compute the forces on the BH tree
 */
 
-// void compute_bh_force(node * n, int prank, int psize) {
-// 	int i;
-// 	if(n->children != NULL){
-// 		for (i = 0; i < 8; i++){
-// 			compute_bh_force(&n->children[i], prank, psize);
-// 		}
-// 	}else if (n->particle->id % psize == prank){
-// 		particle_t * p = n->particle;
-// 		compute_force_particle(n,p);
-// 	}
-// }
-
-void compute_bh_force(node * n, int prank, int psize) {
+void compute_bh_force(node * n) {
 	int i;
 	if(n->children != NULL){
 		for (i = 0; i < 8; i++){
-			compute_bh_force(&n->children[i], prank, psize);
+			compute_bh_force(&n->children[i]);
 		}
 	}else{
 		particle_t * p = n->particle;
