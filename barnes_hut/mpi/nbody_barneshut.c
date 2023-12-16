@@ -26,29 +26,22 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	construct_bh_tree(array,root1, nbr_particles);
 	printf("OK \n");
 	// printf("Init forces ...");
-	//print_particle(&array[7], prank, psize);
+	print_particle(&array[7], prank, psize);
 	// compute_force_in_node(root1, root1);
 	// printf(" OK \n");
 	printf("Compute forces ...\n");
 	for (n = 0 ; n  < nbr_iterations ; n++){
-		printf("%d: ITERATION %d \n",prank, n);
+		//printf("%d: ITERATION %d \n",prank, n);
 		compute_force_in_node(root1, root1, prank, psize);
 		compute_bh_force(root1);
-		//print_particle(&array[7], prank, psize);
-		printf("%d: before gather \n", prank);
-		//gather_force_vector(array, nbr_particles, forces);
-		printf("%d: before all reduce \n", prank);
-		//MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
-		printf("%d: before broadcast \n", prank);
-		//broadcast_force_vector(array, nbr_particles, forces);
-		printf("%d: before move particles \n", prank);
+
+		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
 		move_all_particles(root2, root1, step);
-		printf("%d: before swap \n", prank);
+
 		root = root1;
 		root1 = root2;
 		root2 = root;
 		clean_tree(root2);
-		printf("%d: end iteration \n", prank);
 	}
 
 	printf("It remains %d particles in space \n",root1->sub_nbr_particles);	
