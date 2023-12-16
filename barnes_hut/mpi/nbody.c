@@ -99,7 +99,7 @@ int main ( int argc, char **argv ) {
 
 	printf("BARNES-HUT simulation starting \n");
 	t1 = second();
-	nbodybarneshut(array, nbr_particles, nbr_iterations);
+	nbodybarneshut(array, nbr_particles, nbr_iterations, prank, psize);
 	t2 = second();
 	printf("N-Body barnes-hut for %d particles : %f [s] \n",nbr_particles, (t2-t1));
 	free(array);
