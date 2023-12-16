@@ -48,7 +48,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 
 		int i;
 		for(i=0; i<nbr_particles; i++) {
-			printf("Particle %i | %i -> (%f, %f, %f) \n", array[i].id, array[i].mpi_id, array[i].fx, array[i].fy, array[i].fz);
+			printf("%d / %d -- Particle %i | %i -> (%f, %f, %f) \n", prank, psize, array[i].id, array[i].mpi_id, array[i].fx, array[i].fy, array[i].fz);
 		}
 	}
 
