@@ -14,6 +14,10 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	particle_t tmp;
 	double forces[3 * nbr_particles];
 
+	for (n = 0; n < nbr_particles; n++) {
+		printf("id: %d", array[n].id);
+	}
+
 	// printf("Creation of the tree ...");
 	root1 = malloc(sizeof(node));	
 	root2 = malloc(sizeof(node));	
