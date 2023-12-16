@@ -61,7 +61,7 @@ int main ( int argc, char **argv ) {
 
 	MPI_Comm_rank(MPI_COMM_WORLD, &prank);
 	MPI_Comm_size(MPI_COMM_WORLD, &psize);
-	//printf("%d: hello (p=%d)\n", prank, psize);
+	printf("%d: hello (p=%d)\n", prank, psize);
 
 	particle_t * array;
 	int nbr_iterations;
