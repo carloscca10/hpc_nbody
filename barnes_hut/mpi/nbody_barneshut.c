@@ -36,6 +36,11 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations)
 		compute_force_in_node(root1, root1);
 		compute_bh_force(root1);
 		move_all_particles(root2, root1, step);
+
+		double forces = gather_force_vector(array);
+		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
+		broadcast_force_vector(&array, forces);
+
 		root = root1;
 		root1 = root2;
 		root2 = root;
@@ -158,13 +163,13 @@ void clean_tree(node * root) {
 compute the forces on the BH tree
 */
 
-void compute_bh_force(node * n) {
+void compute_bh_force(node * n, int prank, int psize) {
 	int i;
 	if(n->children != NULL){
 		for (i = 0; i < 8; i++){
 			compute_bh_force(&n->children[i]);
 		}
-	}else{
+	}else if (n->particle->id % psize == prank){
 		particle_t * p = n->particle;
 		compute_force_particle(n,p);
 	}
@@ -227,11 +232,11 @@ void compute_force(particle_t *p, double xpos, double ypos,  double zpos, double
 /*
 Compute all the forces in the particles
 */
-void compute_force_in_node(node *n,node *root) {
+void compute_force_in_node(node *n,node *root, int prank, int psize) {
 	int i;
 	if(n==NULL) return;
 
-	if((n->particle != NULL)&&(n->children == NULL)) {
+	if((n->particle != NULL)&&(n->children == NULL)&&(n->particle->id % psize == prank)) {
 		particle_t*p = n->particle;
 		p->fx = 0;
 		p->fy = 0;
@@ -495,8 +500,15 @@ void print_particle(particle_t * p){
 }
 
 
-// get dimensions of the space for each rank
-// void location_rank (node root, node * rank_node, int prank, int psize) {
-// 	int div = cbrt(psize);
-// 	rank_node.maxx = root.xmin + (root.xmax - root.xmin) / div * (prank % 3 + 1);
-// }
+/*
+OTHER MPI FUNCTIONS
+*/
+
+void gather_force_vector(particle_t *array, int nbr_particles, double *forces) {
+    int i;
+    for (i = 0; i < nbr_particles; i++) {
+        forces[3*i] = array[i].fx;    // x-component of force for particle i
+        forces[3*i + 1] = array[i].fy; // y-component of force for particle i
+        forces[3*i + 2] = array[i].fz; // z-component of force for particle i
+    }
+}
