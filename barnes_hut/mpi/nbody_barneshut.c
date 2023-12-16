@@ -508,9 +508,9 @@ OTHER MPI FUNCTIONS
 void gather_force_vector(particle_t *array, int nbr_particles, double *forces) {
     int i;
     for (i = 0; i < nbr_particles; i++) {
-        forces[3*i] = &array[i].fx;    // x-component of force for particle i
-        forces[3*i + 1] = &array[i].fy; // y-component of force for particle i
-        forces[3*i + 2] = &array[i].fz; // z-component of force for particle i
+        forces[3*i] = array[i].fx;    // x-component of force for particle i
+        forces[3*i + 1] = array[i].fy; // y-component of force for particle i
+        forces[3*i + 2] = array[i].fz; // z-component of force for particle i
     }
 }
 
@@ -518,8 +518,8 @@ void gather_force_vector(particle_t *array, int nbr_particles, double *forces) {
 void broadcast_force_vector(particle_t *array, int nbr_particles, double *forces) {
 	int i;
 	for (i = 0; i < nbr_particles; i++) {
-		&array[i].fx = forces[3*i];    // x-component of force for particle i
-		&array[i].fy = forces[3*i + 1]; // y-component of force for particle i
-		&array[i].fz = forces[3*i + 2]; // z-component of force for particle i
+		array[i].fx = forces[3*i];    // x-component of force for particle i
+		array[i].fy = forces[3*i + 1]; // y-component of force for particle i
+		array[i].fz = forces[3*i + 2]; // z-component of force for particle i
 	}
 }
