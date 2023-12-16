@@ -36,12 +36,12 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		printf("ITERATION %d \n",n);
 		compute_force_in_node(root1, root1, prank, psize);
 		compute_bh_force(root1, prank, psize);
-		move_all_particles(root2, root1, step);
-
 
 		gather_force_vector(&array, nbr_particles, &forces);
 		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
 		broadcast_force_vector(&array, nbr_particles, forces);
+
+		move_all_particles(root2, root1, step);
 
 		root = root1;
 		root1 = root2;
