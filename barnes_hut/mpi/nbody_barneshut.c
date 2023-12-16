@@ -185,7 +185,7 @@ void compute_bh_force(node * n, int prank, int psize) {
 	int i;
 	if(n->children != NULL){
 		for (i = 0; i < 8; i++){
-			compute_bh_force(&n->children[i]);
+			compute_bh_force(&n->children[i], prank, psize);
 		}
 	}else{
 		particle_t * p = n->particle;
