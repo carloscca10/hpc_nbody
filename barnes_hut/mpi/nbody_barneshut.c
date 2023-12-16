@@ -32,7 +32,9 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	//printf("Compute forces ...\n");
 	for (n = 0 ; n  < nbr_iterations ; n++){
 		//printf("%d: ITERATION %d \n",prank, n);
+		printf("hello 1");
 		compute_force_in_node(root1, root1, prank, psize);
+		printf("hello 2");
 		compute_bh_force(root1, prank, psize);
 
 		gather_force_vector(array, nbr_particles, forces);
