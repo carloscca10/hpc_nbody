@@ -515,7 +515,7 @@ void gather_force_vector(particle_t *array, int nbr_particles, double *forces) {
 }
 
 
-void broadcast_force_vector(particle_t *array, int nbr_particles, double forces) {
+void broadcast_force_vector(particle_t *array, int nbr_particles, double *forces) {
 	int i;
 	for (i = 0; i < nbr_particles; i++) {
 		&array[i].fx = forces[3*i];    // x-component of force for particle i
