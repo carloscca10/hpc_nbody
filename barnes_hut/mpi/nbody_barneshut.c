@@ -219,7 +219,7 @@ Compute force of node n on particle p
 
 
 void compute_force_particle(node *n, particle_t *p, int prank, int psize) {
-    int i;
+    int i, j;
     double diffx, diffy, diffz, distance;
     double size;
 
