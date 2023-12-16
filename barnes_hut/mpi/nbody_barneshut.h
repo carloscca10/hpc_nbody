@@ -32,4 +32,8 @@ void print_tree(node * n);
 void print_node(node * n);
 void print_particle(particle_t * p);
 
+// MPI
+void gather_force_vector(particle_t array, int nbr_particles, double *forces);
+void broadcast_force_vector(particle_t *array, int nbr_particles, double forces);
+
 #endif /*NBODYBARNESHUT_H_*/

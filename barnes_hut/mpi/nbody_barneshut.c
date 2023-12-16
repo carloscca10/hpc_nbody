@@ -12,6 +12,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	node * root2;
 	node * root;
 	particle_t tmp;
+	double forces[3 * nbr_particles];
 
 	// Compute number of subnodes to be taken care of
 	//if (psize <=8)
@@ -37,9 +38,10 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		compute_bh_force(root1, prank, psize);
 		move_all_particles(root2, root1, step);
 
-		double forces = gather_force_vector(array);
+		
+		gather_force_vector(array, nbr_particles, &forces);
 		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
-		broadcast_force_vector(&array, forces);
+		broadcast_force_vector(&array, nbr_particles, forces);
 
 		root = root1;
 		root1 = root2;
@@ -503,11 +505,21 @@ void print_particle(particle_t * p){
 OTHER MPI FUNCTIONS
 */
 
-void gather_force_vector(particle_t *array, int nbr_particles, double *forces) {
+void gather_force_vector(particle_t array, int nbr_particles, double *forces) {
     int i;
     for (i = 0; i < nbr_particles; i++) {
         forces[3*i] = array[i].fx;    // x-component of force for particle i
         forces[3*i + 1] = array[i].fy; // y-component of force for particle i
         forces[3*i + 2] = array[i].fz; // z-component of force for particle i
     }
+}
+
+
+void broadcast_force_vector(particle_t *array, int nbr_particles, double forces) {
+	int i;
+	for (i = 0; i < nbr_particles; i++) {
+		array[i].fx = forces[3*i];    // x-component of force for particle i
+		array[i].fy = forces[3*i + 1]; // y-component of force for particle i
+		array[i].fz = forces[3*i + 2]; // z-component of force for particle i
+	}
 }
