@@ -188,34 +188,34 @@ void compute_bh_force(node * n, int prank, int psize) {
 Compute force of node n on particle p
 */
 
-void compute_force_particle(node * n, particle_t * p){
-	int i;
-	double diffx,diffy,diffz,distance;
-	double size;
-	if ((n==NULL)||(n->sub_nbr_particles==0)){ return;}
+// void compute_force_particle(node * n, particle_t * p){
+// 	int i;
+// 	double diffx,diffy,diffz,distance;
+// 	double size;
+// 	if ((n==NULL)||(n->sub_nbr_particles==0)){ return;}
 
-	if ((n->particle != NULL)&&(n->children==NULL)) {
-		compute_force(p, n->centerx, n->centery,  n->centerz, n->mass) ;
-	}
-	else{
-		size = n->maxx - n->minx;
-		diffx = n->centerx - p->x;
-		diffy = n->centery - p->y;
-		diffz = n->centerz - p->z;
-		distance = sqrt(diffx*diffx + diffy*diffy + diffz*diffz);
+// 	if ((n->particle != NULL)&&(n->children==NULL)) {
+// 		compute_force(p, n->centerx, n->centery,  n->centerz, n->mass) ;
+// 	}
+// 	else{
+// 		size = n->maxx - n->minx;
+// 		diffx = n->centerx - p->x;
+// 		diffy = n->centery - p->y;
+// 		diffz = n->centerz - p->z;
+// 		distance = sqrt(diffx*diffx + diffy*diffy + diffz*diffz);
 
-//	The particle is far away. Use an approximation of the force
-		if(size / distance < THETA) {
-			compute_force(p, n->centerx, n->centery, n->centerz, n->mass);
-		} else {
+// //	The particle is far away. Use an approximation of the force
+// 		if(size / distance < THETA) {
+// 			compute_force(p, n->centerx, n->centery, n->centerz, n->mass);
+// 		} else {
 
-//      Otherwise, run the procedure recursively on each of the current node's children.
-			for(i=0; i<8; i++) {
-				compute_force_particle(&n->children[i], p, prank, psize);
-			}
-		}
-	}
-}
+// //      Otherwise, run the procedure recursively on each of the current node's children.
+// 			for(i=0; i<8; i++) {
+// 				compute_force_particle(&n->children[i], p, prank, psize);
+// 			}
+// 		}
+// 	}
+// }
 
 
 void compute_force_particle(node *n, particle_t *p, int prank, int psize) {
