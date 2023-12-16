@@ -321,7 +321,7 @@ void compute_force_in_node(node *n, node *root, int prank, int psize) {
 			p->fx = 0;
 			p->fy = 0;
 			p->fz = 0;
-			printf("Particle %i | %i"\n, p->id, p->mpi_id);
+			printf("Particle %i | %i\n", p->id, p->mpi_id);
 			if (p->mpi_id % psize == prank) {
 				compute_force_particle(root, p);
 			}
