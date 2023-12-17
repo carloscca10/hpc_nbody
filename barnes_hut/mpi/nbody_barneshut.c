@@ -3,9 +3,6 @@
 
 
 
-
-
-
 #include <stdbool.h>
 
 
@@ -82,7 +79,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		for(int i=0; i<3*nbr_particles; i++) {
 			total_force += forces[i];
 		}
-		printf("Total force after broadcast: %f\n", total_force);
+		//printf("Total force after broadcast: %f\n", total_force);
 
 		//check_no_f_if_not_rank_forces(forces, nbr_particles, prank, psize);
 
@@ -98,7 +95,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		MPI_Barrier(MPI_COMM_WORLD);
 		clean_tree(root2);
 		MPI_Barrier(MPI_COMM_WORLD);
-		print_particle_it(&array[7], prank, psize, n);
+		//print_particle_it(&array[7], prank, psize, n);
 		MPI_Barrier(MPI_COMM_WORLD);
 	}
 
