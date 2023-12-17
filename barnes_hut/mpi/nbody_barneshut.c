@@ -58,9 +58,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 			}
 		MPI_Gather(array, nbr_particles * sizeof(particle_t), MPI_BYTE, gathered_arrays, nbr_particles * sizeof(particle_t), MPI_BYTE, 0, MPI_COMM_WORLD);
 
-		if (prank == 0) {
-		compare_arrays(gathered_arrays, nbr_particles, prank, psize);
-		}
+		compare_arrays(array, nbr_particles, prank, psize);
 
 		move_all_particles(root2, root1, step);
 		MPI_Barrier(MPI_COMM_WORLD);
@@ -681,7 +679,7 @@ void broadcast_force_vector(node * n, double *forces) {
 
 
 
-bool compare_arrays(particle_t * array, int nbr_particles, int prank, int psize) {
+void compare_arrays(particle_t * array, int nbr_particles, int prank, int psize) {
 	particle_t *gathered_arrays = NULL;
 	bool equal = true;
 
