@@ -41,12 +41,6 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		compute_force_in_node(root1, root1, prank, psize);
 		compute_bh_force(root1, prank, psize);
 
-		for(i=0; i<nbr_particles; i++) {
-			if(i%psize != prank) {
-				forces[i] = 0;
-			}
-		}
-
 		//gather_force_vector(root1, forces);
 		gather_force_vector_array(array, forces, nbr_particles, prank, psize);
 		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
@@ -590,6 +584,10 @@ void gather_force_vector_array(particle_t * array, double *forces, int nbr_parti
 			forces[3 * i] = array[i].fx;    // x-component of force for particle i
 			forces[3 * i + 1] = array[i].fy;    // y-component of force for particle i
 			forces[3 * i + 2] = array[i].fz;    // z-component of force for particle i
+		} else {
+			forces[3 * i] = 0;    // x-component of force for particle i
+			forces[3 * i + 1] = 0;    // y-component of force for particle i
+			forces[3 * i + 2] = 0;    // z-component of force for particle i
 		}
 	}
 }
