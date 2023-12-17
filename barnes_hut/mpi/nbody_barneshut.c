@@ -79,7 +79,6 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		total_force = 0;
 		for(int i=0; i<3*nbr_particles; i++) {
 			total_force += forces[i];
-			if(forces[i] != 0) printf("FORCE NOT 0!!\n");
 		}
 		printf("Total force after broadcast: %f\n", total_force);
 
