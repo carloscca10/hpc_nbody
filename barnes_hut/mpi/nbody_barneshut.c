@@ -47,17 +47,21 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		compare_arrays(array, nbr_particles, prank, psize);
 		compute_force_in_node(root1, root1, prank, psize);
 		MPI_Barrier(MPI_COMM_WORLD);
-		compute_bh_force(root1, prank, psize);
+		compare_arrays(array, nbr_particles, prank, psize);
+		compare_arrays_except_forces(root1, prank, psize);
 		MPI_Barrier(MPI_COMM_WORLD);
+		compare_arrays_except_forces(array, nbr_particles, prank, psize);
 
 		gather_force_vector(root1, forces);
 		MPI_Barrier(MPI_COMM_WORLD);
 		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
+		compare_arrays_except_forces(array, nbr_particles, prank, psize);
 		compare_arrays(array, nbr_particles, prank, psize);
 		MPI_Barrier(MPI_COMM_WORLD);
 		broadcast_force_vector(root1, forces);
 		MPI_Barrier(MPI_COMM_WORLD);
 		compare_arrays(array, nbr_particles, prank, psize);
+		compare_arrays_except_forces(array, nbr_particles, prank, psize);
 
 
 		particle_t *gathered_arrays = NULL;
@@ -727,6 +731,51 @@ void compare_arrays(particle_t * array, int nbr_particles, int prank, int psize)
 		}
 	}
 }
+
+
+
+
+void compare_arrays_except_forces(particle_t * array, int nbr_particles, int prank, int psize) {
+	particle_t *gathered_arrays = NULL;
+	bool equal = true;
+
+	if (prank == 0) {
+		gathered_arrays = malloc(sizeof(particle_t) * nbr_particles * psize);
+	}
+	
+	MPI_Gather(array, nbr_particles * sizeof(particle_t), MPI_BYTE, gathered_arrays, nbr_particles * sizeof(particle_t), MPI_BYTE, 0, MPI_COMM_WORLD);
+
+	if (prank == 0) {
+		for (int i = 0; i < psize - 1 && equal; ++i) {
+			for (int j = i + 1; j < psize && equal; ++j) {
+				for (int k = 0; k < nbr_particles && equal; ++k) {
+					int index1 = i * nbr_particles + k;
+					int index2 = j * nbr_particles + k;
+
+					particle_t *particle1 = &gathered_arrays[index1];
+					particle_t *particle2 = &gathered_arrays[index2];
+
+					// Compare each field of the particle struct
+					if (particle1->x != particle2->x || particle1->y != particle2->y || particle1->z != particle2->z ||
+						particle1->vx != particle2->vx || particle1->vy != particle2->vy || particle1->vz != particle2->vz ||
+						// particle1->fx != particle2->fx || particle1->fy != particle2->fy || particle1->fz != particle2->fz ||
+						particle1->m != particle2->m || particle1->id != particle2->id || particle1->mpi_id != particle2->mpi_id ||
+						particle1->V != particle2->V) {
+						printf(" \n\n ERROR: Arrays are not the same!\n\n");
+						equal = false;
+					}
+				}
+			}
+		}
+		if(equal) {
+		printf(" \n\n GOOD: Arrays equal!\n\n");
+		}
+		if (prank == 0) {
+			free(gathered_arrays);
+		}
+	}
+}
+
 
 
 

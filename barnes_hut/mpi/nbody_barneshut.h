@@ -39,6 +39,7 @@ void print_particle_it(particle_t * p, int prank, int psize, int n);
 void gather_force_vector(node * n, double *forces);
 void broadcast_force_vector(node *n, double *forces);
 void compare_arrays(particle_t *array, int nbr_particles, int prank, int psize);
+void compare_arrays_except_forces(particle_t * array, int nbr_particles, int prank, int psize);
 
 
 #endif /*NBODYBARNESHUT_H_*/
