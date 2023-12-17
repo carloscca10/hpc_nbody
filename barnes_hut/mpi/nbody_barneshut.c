@@ -624,7 +624,7 @@ void broadcast_force_vector(node * n, double *forces) {
 	particle_t *particles = n->particle;
 	print("Broadcasting forces\n");
 	for (j = 0; j < n->sub_nbr_particles; j++) {
-		print("Broadcasting force %d\n", j)
+		print("Broadcasting force %d\n", j);
 		particle_t *p = &particles[j];
 		p->fx = forces[3 * p->mpi_id];    // x-component of force for particle i
 		p->fy = forces[3 * p->mpi_id + 1];    // y-component of force for particle i
