@@ -795,7 +795,7 @@ void compare_arrays_except_forces(particle_t * array, int nbr_particles, int pra
 	}
 }
 
-check_no_f_if_not_rank(particle_t * array, int nbr_particles, int prank, int psize) {
+void check_no_f_if_not_rank(particle_t * array, int nbr_particles, int prank, int psize) {
 	bool equal = true;
 	for(int i=0; i<nbr_particles; i++) {
 		if(array[i].mpi_id % psize != prank) {
