@@ -32,11 +32,6 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	//printf("Compute forces ...\n");
 	for (n = 0 ; n  < nbr_iterations ; n++){
 		printf("%d: ITERATION %d \n",prank, n);
-		for(int i = 0; i < 3*nbr_particles; i++) {
-			forces[i] = 0;
-		}
-		broadcast_force_vector(root1, forces);
-		
 		compute_force_in_node(root1, root1, prank, psize);
 		compute_bh_force(root1, prank, psize);
 
@@ -49,7 +44,6 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
 		broadcast_force_vector(root1, forces);
 
-		
 		move_all_particles(root2, root1, step);
 
 		root = root1;
@@ -123,10 +117,9 @@ void move_particle(node * root, node * n, particle_t * p, double step) {
 	if (! is_particle_out_of_scope(p,root)) {
 		insert_particle(p,root);
 	}else{
-//		printf("\tparticle %d is out of scope. It will be destroyed at next iteration \n",p->id);
+		print("Particle %d | %d is out of scope. It will be destroyed at next iteration\n",p->id, p->mpi_id);
 		n->particle = NULL;
 	}
-	
 }
 
 /*
