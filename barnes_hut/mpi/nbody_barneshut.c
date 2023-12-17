@@ -117,7 +117,7 @@ void move_particle(node * root, node * n, particle_t * p, double step) {
 	if (! is_particle_out_of_scope(p,root)) {
 		insert_particle(p,root);
 	}else{
-		print("Particle %d | %d is out of scope. It will be destroyed at next iteration\n",p->id, p->mpi_id);
+		printf("Particle %d | %d is out of scope. It will be destroyed at next iteration\n",p->id, p->mpi_id);
 		n->particle = NULL;
 	}
 }
