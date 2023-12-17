@@ -614,7 +614,7 @@ void gather_force_vector(node * n, double *forces) {
 	int i, j;
 	if(n->children != NULL){
 		for (i = 0; i < 8; i++){
-			gather_force_vector(&n->children[i], &forces);
+			gather_force_vector(&n->children[i], forces);
 		}
 	}else{
 		printf("Inside Gathering forces\n");
