@@ -55,7 +55,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		check_no_f_if_not_rank_forces(forces, nbr_particles, prank, psize);
 
 		double total_force = 0;
-		for(int i=0; i<nbr_particles; i++) {
+		for(int i=0; i<3*nbr_particles; i++) {
 			forces[i] = 0;    // x-component of force for particle i
 			total_force += forces[i];
 		}
@@ -68,7 +68,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		//broadcast_force_vector(root1, forces);
 
 		total_force = 0;
-		for(int i=0; i<nbr_particles; i++) {
+		for(int i=0; i<3*nbr_particles; i++) {
 			total_force += forces[i];
 		}
 		printf("Total force after reduce: %f\n", total_force);
@@ -77,7 +77,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		MPI_Barrier(MPI_COMM_WORLD);
 
 		total_force = 0;
-		for(int i=0; i<nbr_particles; i++) {
+		for(int i=0; i<3*nbr_particles; i++) {
 			total_force += forces[i];
 			if(forces[i] != 0) printf("FORCE NOT 0!!\n");
 		}
@@ -827,7 +827,7 @@ void check_no_f_if_not_rank(particle_t * array, int nbr_particles, int prank, in
 }
 
 
-void check_no_f_if_not_rank_forces(double forces, int nbr_particles, int prank, int psize) {
+void check_no_f_if_not_rank_forces(double *forces, int nbr_particles, int prank, int psize) {
 	bool equal = true;
 	for(int i=0; i<nbr_particles && equal; i++) {
 		if(i % psize != prank) {
