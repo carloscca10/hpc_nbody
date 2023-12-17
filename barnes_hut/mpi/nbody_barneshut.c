@@ -38,8 +38,9 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	// compute_force_in_node(root1, root1);
 	// printf(" OK \n");
 	//printf("Compute forces ...\n");
+	MPI_Barrier(MPI_COMM_WORLD);
 	compare_arrays(array, nbr_particles, prank, psize);
-	
+
 	for (n = 0 ; n  < nbr_iterations ; n++){
 		printf("%d: ITERATION %d \n",prank, n);
 		compute_force_in_node(root1, root1, prank, psize);
