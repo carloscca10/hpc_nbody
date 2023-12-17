@@ -66,6 +66,7 @@
         "nbody_bruteforce.h": "c",
         "stdio.h": "c",
         "nbody_barneshut.h": "c",
-        "math.h": "c"
+        "math.h": "c",
+        "stdlib.h": "c"
     }
 }

@@ -58,6 +58,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		root1 = root2;
 		root2 = root;
 		clean_tree(root2);
+		print_particle_it(&array[7], prank, psize, n);
 	}
 
 	printf("It remains %d particles in space \n",root1->sub_nbr_particles);	
@@ -597,6 +598,16 @@ void print_particle(particle_t * p, int prank, int psize){
 	printf(" M = %f", p->m);
 	printf("\n");
 }
+
+void print_particle_it(particle_t * p, int prank, int psize, int n){
+	printf("It %d ||", n);
+	printf("Prank %d/%d | ", prank, psize);
+	printf("[Particle %d]",p->id);
+	printf(" position ([%f:%f:%f])",p->x, p->y, p->z);
+	printf(" M = %f", p->m);
+	printf("\n");
+}
+
 
 /*
 OTHER MPI FUNCTIONS
