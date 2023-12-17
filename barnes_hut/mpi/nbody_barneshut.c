@@ -58,7 +58,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		root1 = root2;
 		root2 = root;
 		clean_tree(root2);
-		print_particle_it(&array[7], prank, psize, n);
+		//print_particle_it(&array[7], prank, psize, n);
 	}
 
 	printf("It remains %d particles in space \n",root1->sub_nbr_particles);	
