@@ -815,7 +815,7 @@ void check_no_f_if_not_rank(particle_t * array, int nbr_particles, int prank, in
 void check_no_f_if_not_rank_forces(double *forces, int nbr_particles, int prank, int psize) {
 	bool equal = true;
 	for(int i=0; i<nbr_particles; i++) {
-		if(array[i].mpi_id % psize != prank) {
+		if(i % psize != prank) {
 			if(forces[3 * i] != 0 || forces[3 * i + 1] != 0 || forces[3 * i + 2] != 0) {
 				printf("ERROR: in force vector, particle %d has non-zero forces", 3*i);
 				equal = false;
