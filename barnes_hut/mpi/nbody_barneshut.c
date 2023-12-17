@@ -49,7 +49,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		// 		forces[3*i + 2] = 0;
 		// 	}
 		// }
-		//MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
+		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
 		broadcast_force_vector(array, nbr_particles, forces);
 		
 		move_all_particles(root2, root1, step);
@@ -58,7 +58,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		root1 = root2;
 		root2 = root;
 		clean_tree(root2);
-		//print_particle_it(&array[7], prank, psize, n);
+		print_particle_it(&array[7], prank, psize, n);
 	}
 
 	printf("It remains %d particles in space \n",root1->sub_nbr_particles);	
@@ -188,9 +188,9 @@ void compute_bh_force(node * n, int prank, int psize) {
 		//if(n->particle->mpi_id % psize == prank){
 		for (j = 0; j < n->sub_nbr_particles; j++) {
 			particle_t *p = &particles[j];
-			//if (p->mpi_id % psize == prank) {
+			if (p->mpi_id % psize == prank) {
 				compute_force_particle(n, p);
-			//}
+			}
 		//}
 		}
 	}
@@ -337,9 +337,9 @@ void compute_force_in_node(node *n, node *root, int prank, int psize) {
 			p->fy = 0;
 			p->fz = 0;
 			//printf("Particle %i | %i\n", p->id, p->mpi_id);
-			//if (p->mpi_id % psize == prank) {
+			if (p->mpi_id % psize == prank) {
 				compute_force_particle(root, p);
-			//}
+			}
         }
     }
 
