@@ -584,7 +584,7 @@ print a particle
 */
 void print_particle(particle_t * p, int prank, int psize){
 	printf("Prank %d/%d | ", prank, psize);
-	printf("[Particle %d]",p->id);
+	printf("[Particle %d, %d]",p->id, p->mpi_id);
 	printf(" position ([%f:%f:%f])",p->x, p->y, p->z);
 	printf("force ([%f:%f:%f])",p->fx, p->fy, p->fz);
 	printf(" M = %f", p->m);
@@ -594,7 +594,7 @@ void print_particle(particle_t * p, int prank, int psize){
 void print_particle_it(particle_t * p, int prank, int psize, int n){
 	printf("It %d ||", n);
 	printf("Prank %d/%d | ", prank, psize);
-	printf("[Particle %d]",p->id);
+	printf("[Particle %d, %d]",p->id, p->mpi_id);
 	printf(" position ([%f:%f:%f])",p->x, p->y, p->z);
 	printf("force ([%f:%f:%f])",p->fx, p->fy, p->fz);
 	printf(" M = %f", p->m);
