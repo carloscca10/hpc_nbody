@@ -20,7 +20,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	double forces[3 * nbr_particles];
 
 	for(i=0; i<3*nbr_particles; i++) {
-		forces[i]=0
+		forces[i]=0;
 	}
 
 	//printf("Creation of the tree ...");
