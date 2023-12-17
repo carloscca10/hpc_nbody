@@ -801,7 +801,7 @@ void check_no_f_if_not_rank(particle_t * array, int nbr_particles, int prank, in
 	for(int i=0; i<nbr_particles; i++) {
 		if(array[i].mpi_id % psize != prank) {
 			if(array[i].fx != 0 || array[i].fy != 0 || array[i].fz != 0) {
-				printf("%d || ERROR: Particle %d has non-zero forces!\n", prank, rray[i].mpi_id);
+				printf("%d || ERROR: Particle %d has non-zero forces!\n", prank, array[i].mpi_id);
 				equal = false;
 			}
 		}
