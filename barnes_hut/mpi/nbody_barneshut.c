@@ -23,7 +23,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	//printf("OK \n");
 
 	//printf("Construction of the tree from file ...");
-	construct_bh_tree(array,root1, nbr_particles);
+	construct_bh_tree(array, root1, nbr_particles);
 	//printf("OK \n");
 	// printf("Init forces ...");
 	print_particle(&array[7], prank, psize);
@@ -609,24 +609,50 @@ void print_particle_it(particle_t * p, int prank, int psize, int n){
 OTHER MPI FUNCTIONS
 */
 
+
 void gather_force_vector(node * n, double *forces) {
-	printf("Inside Gathering forces\n");
-	int j;
-	particle_t *particles = n->particle;
-	printf("Gathering forces\n");
-	for (j = 0; j < n->sub_nbr_particles; j++) {
-		printf("Gathering force %d\n", j);
-		particle_t *p = &particles[j];
-		printf("fx force %d\n", j);
-		printf("p->mpi_id: %d\n", p->mpi_id);
-		printf("p->fx: %f\n", p->fx);
-		forces[3 * p->mpi_id] = p->fx;    // x-component of force for particle i
-		printf("fy force %d\n", j);
-		forces[3 * p->mpi_id + 1] = p->fy;    // y-component of force for particle i
-		printf("fz force %d\n", j);
-		forces[3 * p->mpi_id + 2] = p->fz;    // z-component of force for particle i
+	int i, j;
+	if(n->children != NULL){
+		for (i = 0; i < 8; i++){
+			gather_force_vector(&n->children[i], &forces);
+		}
+	}else{
+		printf("Inside Gathering forces\n");
+		particle_t *particles = n->particle;
+		printf("Gathering forces\n");
+		for (j = 0; j < n->sub_nbr_particles; j++) {
+			printf("Gathering force %d\n", j);
+			particle_t *p = &particles[j];
+			printf("fx force %d\n", j);
+			printf("p->mpi_id: %d\n", p->mpi_id);
+			printf("p->fx: %f\n", p->fx);
+			forces[3 * p->mpi_id] = p->fx;    // x-component of force for particle i
+			printf("fy force %d\n", j);
+			forces[3 * p->mpi_id + 1] = p->fy;    // y-component of force for particle i
+			printf("fz force %d\n", j);
+			forces[3 * p->mpi_id + 2] = p->fz;    // z-component of force for particle i
+		}
 	}
 }
+
+// void gather_force_vector(node * n, double *forces) {
+// 	printf("Inside Gathering forces\n");
+// 	int j;
+// 	particle_t *particles = n->particle;
+// 	printf("Gathering forces\n");
+// 	for (j = 0; j < n->sub_nbr_particles; j++) {
+// 		printf("Gathering force %d\n", j);
+// 		particle_t *p = &particles[j];
+// 		printf("fx force %d\n", j);
+// 		printf("p->mpi_id: %d\n", p->mpi_id);
+// 		printf("p->fx: %f\n", p->fx);
+// 		forces[3 * p->mpi_id] = p->fx;    // x-component of force for particle i
+// 		printf("fy force %d\n", j);
+// 		forces[3 * p->mpi_id + 1] = p->fy;    // y-component of force for particle i
+// 		printf("fz force %d\n", j);
+// 		forces[3 * p->mpi_id + 2] = p->fz;    // z-component of force for particle i
+// 	}
+// }
 
 void broadcast_force_vector(node * n, double *forces) {
 	int j;
