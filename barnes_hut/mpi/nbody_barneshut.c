@@ -609,6 +609,7 @@ OTHER MPI FUNCTIONS
 */
 
 void gather_force_vector(node * n, double *forces) {
+	int j;
 	particle_t *particles = n->particle;
 	for (j = 0; j < n->sub_nbr_particles; j++) {
 		particle_t *p = &particles[j];
@@ -619,6 +620,7 @@ void gather_force_vector(node * n, double *forces) {
 }
 
 void broadcast_force_vector(node * n, double *forces) {
+	int j;
 	particle_t *particles = n->particle;
 	for (j = 0; j < n->sub_nbr_particles; j++) {
 		particle_t *p = &particles[j];
