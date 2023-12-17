@@ -41,6 +41,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		// }
 
 		//gather_force_vector(array, nbr_particles, forces);
+		printf("Start Gathering forces\n");
 		gather_force_vector(root1, forces);
 		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
 		//broadcast_force_vector(array, nbr_particles, forces);
@@ -609,9 +610,12 @@ OTHER MPI FUNCTIONS
 */
 
 void gather_force_vector(node * n, double *forces) {
+	printf("Inside Gathering forces\n");
 	int j;
 	particle_t *particles = n->particle;
+	printf("Gathering forces\n");
 	for (j = 0; j < n->sub_nbr_particles; j++) {
+		printf("Gathering force %d\n", j);
 		particle_t *p = &particles[j];
 		forces[3 * p->mpi_id] = p->fx;    // x-component of force for particle i
 		forces[3 * p->mpi_id + 1] = p->fy;    // y-component of force for particle i
