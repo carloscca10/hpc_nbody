@@ -1,6 +1,14 @@
 #include "nbody_barneshut.h"
 #include <mpi.h>
 
+
+
+
+
+
+#include <stdbool.h>
+
+
 /*
 Implementation of a barnes-hut algorithm for the N-Body problem.
 */
@@ -47,6 +55,16 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		MPI_Barrier(MPI_COMM_WORLD);
 		broadcast_force_vector(root1, forces);
 		MPI_Barrier(MPI_COMM_WORLD);
+
+		particle_t *gathered_arrays = NULL;
+			if (prank == 0) {
+				gathered_arrays = malloc(sizeof(particle_t) * nbr_particles * psize);
+			}
+		MPI_Gather(array, nbr_particles * sizeof(particle_t), MPI_BYTE, gathered_arrays, nbr_particles * sizeof(particle_t), MPI_BYTE, 0, MPI_COMM_WORLD);
+
+		if (prank == 0) {
+			bool arrays_are_same = compare_arrays(gathered_arrays, nbr_particles, psize);
+		}
 
 		move_all_particles(root2, root1, step);
 		MPI_Barrier(MPI_COMM_WORLD);
@@ -662,4 +680,33 @@ void broadcast_force_vector(node * n, double *forces) {
             broadcast_force_vector(&n->children[j], forces);
         }
     }
+}
+
+
+
+
+bool compare_arrays(particle_t *gathered_arrays, int nbr_particles, int psize) {
+    for (int i = 0; i < psize - 1; ++i) {
+        for (int j = i + 1; j < psize; ++j) {
+            for (int k = 0; k < nbr_particles; ++k) {
+                int index1 = i * nbr_particles + k;
+                int index2 = j * nbr_particles + k;
+
+                particle_t *particle1 = &gathered_arrays[index1];
+                particle_t *particle2 = &gathered_arrays[index2];
+
+                // Compare each field of the particle struct
+                if (particle1->x != particle2->x || particle1->y != particle2->y || particle1->z != particle2->z ||
+                    particle1->vx != particle2->vx || particle1->vy != particle2->vy || particle1->vz != particle2->vz ||
+                    particle1->fx != particle2->fx || particle1->fy != particle2->fy || particle1->fz != particle2->fz ||
+                    particle1->m != particle2->m || particle1->id != particle2->id || particle1->mpi_id != particle2->mpi_id ||
+                    particle1->V != particle2->V) {
+					printf(" \n\n ERROR: Arrays are not the same!\n\n");
+                    return false;
+                }
+            }
+        }
+    }
+	printf(" \n\n GOOD: Arrays equal!\n\n");
+    return true;
 }
