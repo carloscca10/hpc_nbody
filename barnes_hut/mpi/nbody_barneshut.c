@@ -720,12 +720,4 @@ bool compare_arrays(particle_t *gathered_arrays, int nbr_particles, int prank, i
 }
 
 
-			if (prank == 0) {
-				gathered_arrays = malloc(sizeof(particle_t) * nbr_particles * psize);
-			}
-		MPI_Gather(array, nbr_particles * sizeof(particle_t), MPI_BYTE, gathered_arrays, nbr_particles * sizeof(particle_t), MPI_BYTE, 0, MPI_COMM_WORLD);
-
-		if (prank == 0) {
-		compare_arrays(gathered_arrays, nbr_particles, prank, psize);
-		}
 
