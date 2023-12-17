@@ -38,15 +38,6 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	
 	for (n = 0 ; n  < nbr_iterations ; n++){
 
-		for(int i=0; i<3*nbr_particles; i++) {
-			forces[i] = 0;
-		}
-
-		for(int i=0; i<nbr_particles; i++) {
-			array[i].fx = 0;
-			array[i].fy = 0;
-			array[i].fz = 0;
-		}
 
 		compute_force_in_node(root1, root1, prank, psize);
 		compute_bh_force(root1, prank, psize);
