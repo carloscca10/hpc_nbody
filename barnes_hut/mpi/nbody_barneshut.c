@@ -737,14 +737,14 @@ void compare_arrays(particle_t * array, int nbr_particles, int prank, int psize)
 						particle1->fx != particle2->fx || particle1->fy != particle2->fy || particle1->fz != particle2->fz ||
 						particle1->m != particle2->m || particle1->id != particle2->id || particle1->mpi_id != particle2->mpi_id ||
 						particle1->V != particle2->V) {
-						printf(" \n\n ERROR: Arrays are not the same!\n\n");
+						printf(" \n\n %d || ERROR: Arrays are not the same!\n\n", prank);
 						equal = false;
 					}
 				}
 			}
 		}
 		if(equal) {
-		printf(" \n\n GOOD: Arrays equal!\n\n");
+		printf(" \n\n %d || GOOD: Arrays equal!\n\n", prank);
 		}
 		if (prank == 0) {
 			free(gathered_arrays);
@@ -781,14 +781,14 @@ void compare_arrays_except_forces(particle_t * array, int nbr_particles, int pra
 						// particle1->fx != particle2->fx || particle1->fy != particle2->fy || particle1->fz != particle2->fz ||
 						particle1->m != particle2->m || particle1->id != particle2->id || particle1->mpi_id != particle2->mpi_id ||
 						particle1->V != particle2->V) {
-						printf(" \n\n ERROR: Arrays are not the same!\n\n");
+						printf(" \n\n %d || ERROR: Arrays are not the same!\n\n", prank);
 						equal = false;
 					}
 				}
 			}
 		}
 		if(equal) {
-		printf(" \n\n GOOD: Arrays equal!\n\n");
+		printf(" \n\n %d || GOOD: Arrays equal!\n\n", prank);
 		}
 		if (prank == 0) {
 			free(gathered_arrays);
@@ -801,13 +801,13 @@ void check_no_f_if_not_rank(particle_t * array, int nbr_particles, int prank, in
 	for(int i=0; i<nbr_particles; i++) {
 		if(array[i].mpi_id % psize != prank) {
 			if(array[i].fx != 0 || array[i].fy != 0 || array[i].fz != 0) {
-				printf("ERROR: Particle %d has non-zero forces!\n", array[i].mpi_id);
+				printf("%d || ERROR: Particle %d has non-zero forces!\n", prank, rray[i].mpi_id);
 				equal = false;
 			}
 		}
 	}
 	if(equal) {
-	printf(" \n\n GOOD: All forces in other ranks 0!\n\n");
+	printf(" \n\n %d || GOOD: All forces in other ranks 0!\n\n", prank);
 	}
 }
 
@@ -817,13 +817,13 @@ void check_no_f_if_not_rank_forces(double *forces, int nbr_particles, int prank,
 	for(int i=0; i<nbr_particles && equal; i++) {
 		if(i % psize != prank) {
 			if(forces[3 * i] != 0 || forces[3 * i + 1] != 0 || forces[3 * i + 2] != 0) {
-				printf("ERROR: in force vector, particle %d has non-zero forces", 3*i);
+				printf("\n\n%d || ERROR: in force vector, particle %d has non-zero forces \n\n",prank, 3*i);
 				equal = false;
 			}
 		}
 	}
 	if(equal) {
-	printf(" \n\n GOOD: Vector forces is ok. \n\n");
+	printf(" \n\n%d || GOOD: Vector forces is ok. \n\n", prank);
 	}
 
 }
