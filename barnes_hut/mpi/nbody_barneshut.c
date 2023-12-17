@@ -613,9 +613,9 @@ void gather_force_vector(node * n, double *forces) {
 	particle_t *particles = n->particle;
 	for (j = 0; j < n->sub_nbr_particles; j++) {
 		particle_t *p = &particles[j];
-		forces[3 * p.mpi_id] = p.fx;    // x-component of force for particle i
-		forces[3 * p.mpi_id + 1] = p.fy; // y-component of force for particle i
-		forces[3 * p.mpi_id + 2] = p.fz; // z-component of force for particle i
+		forces[3 * p->mpi_id] = p->fx;    // x-component of force for particle i
+		forces[3 * p->mpi_id + 1] = p->fy;    // y-component of force for particle i
+		forces[3 * p->mpi_id + 2] = p->fz;    // z-component of force for particle i
 	}
 }
 
@@ -624,9 +624,9 @@ void broadcast_force_vector(node * n, double *forces) {
 	particle_t *particles = n->particle;
 	for (j = 0; j < n->sub_nbr_particles; j++) {
 		particle_t *p = &particles[j];
-		p.fx = forces[3 * p.mpi_id];    // x-component of force for particle i
-		p.fy = forces[3 * p.mpi_id + 1]; // y-component of force for particle i
-		p.fz = forces[3 * p.mpi_id + 2]; // z-component of force for particle i
+		p->fx = forces[3 * p->mpi_id];    // x-component of force for particle i
+		p->fy = forces[3 * p->mpi_id + 1];    // y-component of force for particle i
+		p->fz = forces[3 * p->mpi_id + 2];    // z-component of force for particle i
 	}
 }
 
