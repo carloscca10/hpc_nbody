@@ -44,5 +44,6 @@ void compare_arrays_except_forces(particle_t * array, int nbr_particles, int pra
 void gather_force_vector_array(particle_t * array, double *forces, int nbr_particles);
 void broadcast_force_vector_array(particle_t * array, double *forces, int nbr_particles);
 void check_no_f_if_not_rank(particle_t * array, int nbr_particles, int prank, int psize);
+void check_no_f_if_not_rank_forces(double *forces, int nbr_particles, int prank, int psize);
 
 #endif /*NBODYBARNESHUT_H_*/
