@@ -41,6 +41,13 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		// }
 
 		gather_force_vector(array, nbr_particles, forces);
+		for(i=0; i<nbr_particles; i++) {
+			if(i%psize != prank) {
+				forces[3*i] = 0;
+				forces[3*i + 1] = 0;
+				forces[3*i + 2] = 0;
+			}
+		}
 		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
 		broadcast_force_vector(array, nbr_particles, forces);
 		
@@ -165,10 +172,11 @@ void clean_tree(node * root) {
 
 /*
 compute the forces on the BH tree (I think it is the force by other particles in its sub-tree)
+1. If the current node is an external node (and it is not body b), calculate the force exerced by the current node on b, and add this amount to b’s net force.
 */
 
 void compute_bh_force(node * n, int prank, int psize) {
-	int i,j;
+	int i, j;
 	if(n->children != NULL){
 		for (i = 0; i < 8; i++){
 			compute_bh_force(&n->children[i], prank, psize);
