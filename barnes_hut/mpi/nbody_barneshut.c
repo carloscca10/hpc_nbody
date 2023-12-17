@@ -11,13 +11,17 @@ Implementation of a barnes-hut algorithm for the N-Body problem.
 */
 void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, int prank, int psize) 
 {
-	int n;
+	int n, i;
 	double step = TIMESTEP;
 	node * root1;
 	node * root2;
 	node * root;
 	particle_t tmp;
 	double forces[3 * nbr_particles];
+
+	for(i=0; i<3*nbr_particles; i++) {
+		forces[i]=0
+	}
 
 	//printf("Creation of the tree ...");
 	root1 = malloc(sizeof(node));	
@@ -570,21 +574,21 @@ void gather_force_vector(node * n, double *forces) {
 
 void broadcast_force_vector_array(particle_t * array, double *forces, int nbr_particles, int prank, int psize) {
 	for(int i=0; i<nbr_particles; i++) {
-		//if(i%psize == prank) {
+		if(i%psize == prank) {
 			array[i].fx = forces[3 * i];    // x-component of force for particle i
 			array[i].fy = forces[3 * i + 1];    // y-component of force for particle i
 			array[i].fz = forces[3 * i + 2];    // z-component of force for particle i
-		//}
+		}
 	}
 }
 
 void gather_force_vector_array(particle_t * array, double *forces, int nbr_particles, int prank, int psize) {
 	for(int i=0; i<nbr_particles; i++) {
-		//if(i%psize == prank) {
+		if(i%psize == prank) {
 			forces[3 * i] = array[i].fx;    // x-component of force for particle i
 			forces[3 * i + 1] = array[i].fy;    // y-component of force for particle i
 			forces[3 * i + 2] = array[i].fz;    // z-component of force for particle i
-		//}
+		}
 	}
 }
 
