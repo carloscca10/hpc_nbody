@@ -345,6 +345,7 @@ void compute_force_in_node(node *n, node *root, int prank, int psize) {
 				printf("ERROR, particle %d|%d not computed\n", p->id, p->mpi_id);
         	}
     	}
+	}
 
     if (n->children != NULL) {
         for (j = 0; j < 8; j++) {
@@ -352,6 +353,26 @@ void compute_force_in_node(node *n, node *root, int prank, int psize) {
         }
     }
 }
+
+
+void compute_force_in_node(node *n,node *root) {
+	int i;
+	if(n==NULL) return;
+
+	if((n->particle != NULL)&&(n->children == NULL)) {
+		particle_t*p = n->particle;
+		p->fx = 0;
+		p->fy = 0;
+		p->fz = 0;
+		compute_force_particle(root, p);
+	}
+	if(n->children != NULL) {
+		for(i=0; i<8; i++) {
+			compute_force_in_node(&n->children[i], root);
+		}
+	}
+}
+
 
 
 
