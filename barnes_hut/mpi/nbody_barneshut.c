@@ -44,10 +44,6 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		MPI_Barrier(MPI_COMM_WORLD);
 		compute_bh_force(root1, prank, psize);
 		MPI_Barrier(MPI_COMM_WORLD);
-		// int i;
-		// for(i=0; i<nbr_particles; i++) {
-		// 	printf("%d / %d -- Particle %i | %i -> (%f, %f, %f) \n", prank, psize, array[i].id, array[i].mpi_id, array[i].fx, array[i].fy, array[i].fz);
-		// }
 
 		gather_force_vector(root1, forces);
 		MPI_Barrier(MPI_COMM_WORLD);
@@ -63,7 +59,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		MPI_Gather(array, nbr_particles * sizeof(particle_t), MPI_BYTE, gathered_arrays, nbr_particles * sizeof(particle_t), MPI_BYTE, 0, MPI_COMM_WORLD);
 
 		if (prank == 0) {
-			bool arrays_are_same = compare_arrays(gathered_arrays, nbr_particles, psize);
+		compare_arrays(gathered_arrays, nbr_particles, prank, psize);
 		}
 
 		move_all_particles(root2, root1, step);
@@ -685,28 +681,51 @@ void broadcast_force_vector(node * n, double *forces) {
 
 
 
-bool compare_arrays(particle_t *gathered_arrays, int nbr_particles, int psize) {
-    for (int i = 0; i < psize - 1; ++i) {
-        for (int j = i + 1; j < psize; ++j) {
-            for (int k = 0; k < nbr_particles; ++k) {
-                int index1 = i * nbr_particles + k;
-                int index2 = j * nbr_particles + k;
+bool compare_arrays(particle_t *gathered_arrays, int nbr_particles, int prank, int psize) {
+	particle_t *gathered_arrays = NULL;
+	bool equal = true;
 
-                particle_t *particle1 = &gathered_arrays[index1];
-                particle_t *particle2 = &gathered_arrays[index2];
+	if (prank == 0) {
+		gathered_arrays = malloc(sizeof(particle_t) * nbr_particles * psize);
+	}
+	
+	MPI_Gather(array, nbr_particles * sizeof(particle_t), MPI_BYTE, gathered_arrays, nbr_particles * sizeof(particle_t), MPI_BYTE, 0, MPI_COMM_WORLD);
 
-                // Compare each field of the particle struct
-                if (particle1->x != particle2->x || particle1->y != particle2->y || particle1->z != particle2->z ||
-                    particle1->vx != particle2->vx || particle1->vy != particle2->vy || particle1->vz != particle2->vz ||
-                    particle1->fx != particle2->fx || particle1->fy != particle2->fy || particle1->fz != particle2->fz ||
-                    particle1->m != particle2->m || particle1->id != particle2->id || particle1->mpi_id != particle2->mpi_id ||
-                    particle1->V != particle2->V) {
-					printf(" \n\n ERROR: Arrays are not the same!\n\n");
-                    return false;
-                }
-            }
-        }
-    }
-	printf(" \n\n GOOD: Arrays equal!\n\n");
-    return true;
+	if (prank == 0) {
+		for (int i = 0; i < psize - 1; ++i) {
+			for (int j = i + 1; j < psize; ++j) {
+				for (int k = 0; k < nbr_particles; ++k) {
+					int index1 = i * nbr_particles + k;
+					int index2 = j * nbr_particles + k;
+
+					particle_t *particle1 = &gathered_arrays[index1];
+					particle_t *particle2 = &gathered_arrays[index2];
+
+					// Compare each field of the particle struct
+					if (particle1->x != particle2->x || particle1->y != particle2->y || particle1->z != particle2->z ||
+						particle1->vx != particle2->vx || particle1->vy != particle2->vy || particle1->vz != particle2->vz ||
+						particle1->fx != particle2->fx || particle1->fy != particle2->fy || particle1->fz != particle2->fz ||
+						particle1->m != particle2->m || particle1->id != particle2->id || particle1->mpi_id != particle2->mpi_id ||
+						particle1->V != particle2->V) {
+						printf(" \n\n ERROR: Arrays are not the same!\n\n");
+						equal = false;
+					}
+				}
+			}
+		}
+		if(equal) {
+		printf(" \n\n GOOD: Arrays equal!\n\n");
+		}
+	}
 }
+
+
+			if (prank == 0) {
+				gathered_arrays = malloc(sizeof(particle_t) * nbr_particles * psize);
+			}
+		MPI_Gather(array, nbr_particles * sizeof(particle_t), MPI_BYTE, gathered_arrays, nbr_particles * sizeof(particle_t), MPI_BYTE, 0, MPI_COMM_WORLD);
+
+		if (prank == 0) {
+		compare_arrays(gathered_arrays, nbr_particles, prank, psize);
+		}
+
