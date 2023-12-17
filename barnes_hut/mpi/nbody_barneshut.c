@@ -627,7 +627,7 @@ void gather_force_vector(node * n, double *forces) {
 
     if (n->children != NULL) {
         for (j = 0; j < 8; j++) {
-            gather_force_vector(node * n, double *forces);
+            gather_force_vector(&n->children[j], forces);
         }
     }
 }
@@ -651,7 +651,7 @@ void broadcast_force_vector(node * n, double *forces) {
 
     if (n->children != NULL) {
         for (j = 0; j < 8; j++) {
-            broadcast_force_vector(node * n, double *forces);
+            broadcast_force_vector(&n->children[j], forces);
         }
     }
 }
