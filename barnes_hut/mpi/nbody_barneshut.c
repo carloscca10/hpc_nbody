@@ -56,7 +56,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 
 		double total_force = 0;
 		for(int i=0; i<3*nbr_particles; i++) {
-			forces[i] = 0;    // x-component of force for particle i
+			//forces[i] = 0;    
 			total_force += forces[i];
 		}
 		printf("Total force before: %f\n", total_force);
