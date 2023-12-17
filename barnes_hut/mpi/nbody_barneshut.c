@@ -75,6 +75,11 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 
 		broadcast_force_vector_array(array, forces, nbr_particles);
 		MPI_Barrier(MPI_COMM_WORLD);
+		for(int i=0; i<nbr_particles; i++) {
+			forces[i] = 0;    // x-component of force for particle i
+			total_force += forces[i];
+		}
+		printf("Total force after: %f\n", total_force);
 		check_no_f_if_not_rank_forces(forces, nbr_particles, prank, psize);
 
 		compare_arrays(array, nbr_particles, prank, psize);
