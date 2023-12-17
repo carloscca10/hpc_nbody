@@ -19,10 +19,6 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	particle_t tmp;
 	double forces[3 * nbr_particles];
 
-	for(i=0; i<3*nbr_particles; i++) {
-		forces[i]=0;
-	}
-
 	//printf("Creation of the tree ...");
 	root1 = malloc(sizeof(node));	
 	root2 = malloc(sizeof(node));	
@@ -44,6 +40,12 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 
 		compute_force_in_node(root1, root1, prank, psize);
 		compute_bh_force(root1, prank, psize);
+
+		for(i=0; i<nbr_particles; i++) {
+			if(i%psize != prank) {
+				forces[i] = 0;
+			}
+		}
 
 		//gather_force_vector(root1, forces);
 		gather_force_vector_array(array, forces, nbr_particles, prank, psize);
