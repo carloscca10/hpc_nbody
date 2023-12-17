@@ -618,6 +618,8 @@ void gather_force_vector(node * n, double *forces) {
 		printf("Gathering force %d\n", j);
 		particle_t *p = &particles[j];
 		printf("fx force %d\n", j);
+		printf("p->mpi_id: %d\n", p->mpi_id);
+		printf("p->fx: %f\n", p->fx):
 		forces[3 * p->mpi_id] = p->fx;    // x-component of force for particle i
 		printf("fy force %d\n", j);
 		forces[3 * p->mpi_id + 1] = p->fy;    // y-component of force for particle i
