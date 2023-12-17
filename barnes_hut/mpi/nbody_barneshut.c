@@ -617,8 +617,11 @@ void gather_force_vector(node * n, double *forces) {
 	for (j = 0; j < n->sub_nbr_particles; j++) {
 		printf("Gathering force %d\n", j);
 		particle_t *p = &particles[j];
+		printf("fx force %d\n", j);
 		forces[3 * p->mpi_id] = p->fx;    // x-component of force for particle i
+		printf("fy force %d\n", j);
 		forces[3 * p->mpi_id + 1] = p->fy;    // y-component of force for particle i
+		printf("fz force %d\n", j);
 		forces[3 * p->mpi_id + 2] = p->fz;    // z-component of force for particle i
 	}
 }
