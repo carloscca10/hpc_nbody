@@ -341,9 +341,7 @@ void compute_force_in_node(node *n, node *root, int prank, int psize) {
 			if ((p->mpi_id % psize) == prank) {
 			//if (prank == 0) {
 				compute_force_particle(root, p);
-			} else if ((p->mpi_id % psize) < 0 || (p->mpi_id % psize) >= psize) {
-				printf("ERROR, particle %d|%d not computed\n", p->id, p->mpi_id);
-        	}
+			} 
     	}
 	}
 
