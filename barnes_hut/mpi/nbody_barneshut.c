@@ -41,6 +41,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		// }
 
 		gather_force_vector(array, nbr_particles, forces);
+		int i;
 		for(i=0; i<nbr_particles; i++) {
 			if(i%psize != prank) {
 				forces[3*i] = 0;
