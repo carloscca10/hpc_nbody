@@ -42,6 +42,9 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	MPI_Barrier(MPI_COMM_WORLD);
 	
 	for (n = 0 ; n  < nbr_iterations ; n++){
+		for(int i=0; i<3*nbr_particles; i++) {
+			forces[i] = 0;
+		}
 		printf("%d: ITERATION %d \n",prank, n);
 		MPI_Barrier(MPI_COMM_WORLD);
 		compute_force_in_node(root1, root1, prank, psize);
@@ -56,7 +59,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 
 		double total_force = 0;
 		for(int i=0; i<3*nbr_particles; i++) {
-			//forces[i] = 0;    
+			//forces[i] = 0;
 			total_force += forces[i];
 		}
 		printf("Total force before: %f\n", total_force);
