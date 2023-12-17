@@ -37,6 +37,7 @@ void print_particle_it(particle_t * p, int prank, int psize, int n);
 // void gather_force_vector(particle_t *array, int nbr_particles, double *forces);
 // void broadcast_force_vector(particle_t *array, int nbr_particles, double *forces);
 void gather_force_vector(node * n, double *forces);
+void NewFunction(int j);
 void broadcast_force_vector(node * n, double *forces);
 
 #endif /*NBODYBARNESHUT_H_*/
