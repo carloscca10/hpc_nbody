@@ -21,6 +21,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	node * root;
 	particle_t tmp;
 	double forces[3 * nbr_particles];
+	double total_force = 0;
 
 	//printf("Creation of the tree ...");
 	root1 = malloc(sizeof(node));	
@@ -38,14 +39,15 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	// compute_force_in_node(root1, root1);
 	// printf(" OK \n");
 	//printf("Compute forces ...\n");
-	check_no_f_if_not_rank(array, nbr_particles, prank, psize);
 	MPI_Barrier(MPI_COMM_WORLD);
 	
 	for (n = 0 ; n  < nbr_iterations ; n++){
+
 		for(int i=0; i<3*nbr_particles; i++) {
 			forces[i] = 0;
 		}
 		printf("%d: ITERATION %d \n",prank, n);
+
 		MPI_Barrier(MPI_COMM_WORLD);
 		compute_force_in_node(root1, root1, prank, psize);
 		compute_bh_force(root1, prank, psize);
@@ -57,17 +59,15 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		MPI_Barrier(MPI_COMM_WORLD);
 		check_no_f_if_not_rank_forces(forces, nbr_particles, prank, psize);
 
-		double total_force = 0;
+		total_force = 0;
 		for(int i=0; i<3*nbr_particles; i++) {
-			//forces[i] = 0;
 			total_force += forces[i];
 		}
 		printf("Total force before: %f\n", total_force);
 
 		MPI_Barrier(MPI_COMM_WORLD);
 		printf("All forces to 0\n");
-		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
-		MPI_Barrier(MPI_COMM_WORLD);
+		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
 		//broadcast_force_vector(root1, forces);
 
 		total_force = 0;
