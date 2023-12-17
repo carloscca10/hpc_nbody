@@ -40,11 +40,8 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		// 	printf("%d / %d -- Particle %i | %i -> (%f, %f, %f) \n", prank, psize, array[i].id, array[i].mpi_id, array[i].fx, array[i].fy, array[i].fz);
 		// }
 
-		//gather_force_vector(array, nbr_particles, forces);
-		printf("Start Gathering forces\n");
 		gather_force_vector(root1, forces);
 		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
-		//broadcast_force_vector(array, nbr_particles, forces);
 		broadcast_force_vector(root1, forces);
 
 		
@@ -591,6 +588,7 @@ void print_particle(particle_t * p, int prank, int psize){
 	printf("Prank %d/%d | ", prank, psize);
 	printf("[Particle %d]",p->id);
 	printf(" position ([%f:%f:%f])",p->x, p->y, p->z);
+	printf("force ([%f:%f:%f])",p->fx, p->fy, p->fz);
 	printf(" M = %f", p->m);
 	printf("\n");
 }
@@ -600,6 +598,7 @@ void print_particle_it(particle_t * p, int prank, int psize, int n){
 	printf("Prank %d/%d | ", prank, psize);
 	printf("[Particle %d]",p->id);
 	printf(" position ([%f:%f:%f])",p->x, p->y, p->z);
+	printf("force ([%f:%f:%f])",p->fx, p->fy, p->fz);
 	printf(" M = %f", p->m);
 	printf("\n");
 }
@@ -655,24 +654,3 @@ void broadcast_force_vector(node * n, double *forces) {
         }
     }
 }
-
-
-
-// void gather_force_vector(particle_t *array, int nbr_particles, double *forces) {
-//     int i;
-//     for (i = 0; i < nbr_particles; i++) {
-//         forces[3*i] = array[i].fx;    // x-component of force for particle i
-//         forces[3*i + 1] = array[i].fy; // y-component of force for particle i
-//         forces[3*i + 2] = array[i].fz; // z-component of force for particle i
-//     }
-// }
-
-
-// void broadcast_force_vector(particle_t *array, int nbr_particles, double *forces) {
-// 	int i;
-// 	for (i = 0; i < nbr_particles; i++) {
-// 		array[i].fx = forces[3*i];    // x-component of force for particle i
-// 		array[i].fy = forces[3*i + 1]; // y-component of force for particle i
-// 		array[i].fz = forces[3*i + 2]; // z-component of force for particle i
-// 	}
-// }
