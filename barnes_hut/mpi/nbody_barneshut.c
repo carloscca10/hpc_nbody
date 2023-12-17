@@ -54,19 +54,25 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		MPI_Barrier(MPI_COMM_WORLD);
 		check_no_f_if_not_rank_forces(forces, nbr_particles, prank, psize);
 
-		// for(int i=0; i<nbr_particles; i++) {
-		// 	array[i].fx = 0;    // x-component of force for particle i
-		// 	array[i].fy = 0;    // y-component of force for particle i
-		// 	array[i].fz = 0;    // z-component of force for particle i
-		// }
+		double total_force = 0;
 		for(int i=0; i<nbr_particles; i++) {
 			forces[i] = 0;    // x-component of force for particle i
+			total_force += forces[i];
 		}
+		printf("Total force before: %f\n", total_force);
+
 		MPI_Barrier(MPI_COMM_WORLD);
 		printf("All forces to 0\n");
 		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
 		MPI_Barrier(MPI_COMM_WORLD);
 		//broadcast_force_vector(root1, forces);
+
+		for(int i=0; i<nbr_particles; i++) {
+			forces[i] = 0;    // x-component of force for particle i
+			total_force += forces[i];
+		}
+		printf("Total force after: %f\n", total_force);
+
 		broadcast_force_vector_array(array, forces, nbr_particles);
 		MPI_Barrier(MPI_COMM_WORLD);
 		check_no_f_if_not_rank_forces(forces, nbr_particles, prank, psize);
