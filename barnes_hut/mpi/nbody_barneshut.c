@@ -40,17 +40,22 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	//printf("Compute forces ...\n");
 	MPI_Barrier(MPI_COMM_WORLD);
 	compare_arrays(array, nbr_particles, prank, psize);
+	MPI_Barrier(MPI_COMM_WORLD);
 
 	for (n = 0 ; n  < nbr_iterations ; n++){
 		printf("%d: ITERATION %d \n",prank, n);
+		compare_arrays(array, nbr_particles, prank, psize);
 		compute_force_in_node(root1, root1, prank, psize);
+		compare_arrays(array, nbr_particles, prank, psize);
 		MPI_Barrier(MPI_COMM_WORLD);
 		compute_bh_force(root1, prank, psize);
+		compare_arrays(array, nbr_particles, prank, psize);
 		MPI_Barrier(MPI_COMM_WORLD);
 
 		gather_force_vector(root1, forces);
 		MPI_Barrier(MPI_COMM_WORLD);
 		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
+		compare_arrays(array, nbr_particles, prank, psize);
 		MPI_Barrier(MPI_COMM_WORLD);
 		broadcast_force_vector(root1, forces);
 		MPI_Barrier(MPI_COMM_WORLD);
@@ -141,7 +146,7 @@ void move_particle(node * root, node * n, particle_t * p, double step) {
 	if (! is_particle_out_of_scope(p,root)) {
 		insert_particle(p,root);
 	}else{
-		printf("Particle %d | %d is out of scope. (%f, %f, %f) \n",p->id, p->mpi_id, p->x, p->y, p->z);
+		//printf("Particle %d | %d is out of scope. (%f, %f, %f) \n",p->id, p->mpi_id, p->x, p->y, p->z);
 		n->particle = NULL;
 	}
 }
