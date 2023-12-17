@@ -827,7 +827,7 @@ void check_no_f_if_not_rank(particle_t * array, int nbr_particles, int prank, in
 }
 
 
-void check_no_f_if_not_rank_forces(double *forces, int nbr_particles, int prank, int psize) {
+void check_no_f_if_not_rank_forces(double forces, int nbr_particles, int prank, int psize) {
 	bool equal = true;
 	for(int i=0; i<nbr_particles && equal; i++) {
 		if(i % psize != prank) {
