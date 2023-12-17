@@ -39,13 +39,16 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	// printf(" OK \n");
 	//printf("Compute forces ...\n");
 	MPI_Barrier(MPI_COMM_WORLD);
+	check_no_f_if_not_rank(array, nbr_particles, prank, psize);
 
 	for (n = 0 ; n  < nbr_iterations ; n++){
 		printf("%d: ITERATION %d \n",prank, n);
 		compute_force_in_node(root1, root1, prank, psize);
 		MPI_Barrier(MPI_COMM_WORLD);
+		check_no_f_if_not_rank(array, nbr_particles, prank, psize);
 		compute_bh_force(root1, prank, psize);
 		MPI_Barrier(MPI_COMM_WORLD);
+		check_no_f_if_not_rank(array, nbr_particles, prank, psize);
 
 		//gather_force_vector(root1, forces);
 		gather_force_vector_array(array, forces, nbr_particles);
@@ -58,10 +61,6 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		// }
 		for(int i=0; i<nbr_particles; i++) {
 			forces[i] = 0;    // x-component of force for particle i
-			if (prank == 0) {
-			printf("part %d | %d \n", array[i].id, array[i].mpi_id);
-			}
-			MPI_Barrier(MPI_COMM_WORLD);
 		}
 
 		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
@@ -796,6 +795,20 @@ void compare_arrays_except_forces(particle_t * array, int nbr_particles, int pra
 	}
 }
 
+check_no_f_if_not_rank(particle_t * array, int nbr_particles, int prank, int psize) {
+	bool equal = true;
+	for(int i=0; i<nbr_particles; i++) {
+		if(array[i].mpi_id % psize != prank) {
+			if(array[i].fx != 0 || array[i].fy != 0 || array[i].fz != 0) {
+				printf("ERROR: Particle %d has non-zero forces!\n", array[i].id);
+				equal = false;
+			}
+		}
+	}
+	if(equal) {
+	printf(" \n\n GOOD: All forces in other ranks 0!\n\n");
+	}
 
+}
 
 
