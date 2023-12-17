@@ -51,6 +51,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		root2 = root;
 		clean_tree(root2);
 		print_particle_it(&array[7], prank, psize, n);
+		MPI_Barrier(MPI_COMM_WORLD);
 	}
 
 	printf("It remains %d particles in space \n",root1->sub_nbr_particles);	
@@ -61,7 +62,6 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	free(root1);
 	free(root2);
 
-	MPI_Barrier(MPI_COMM_WORLD);
 	
 	// print final values of element number 8 of array (array[7])
 	//if(prank == 0) {
