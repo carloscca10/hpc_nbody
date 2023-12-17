@@ -59,7 +59,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		for(int i=0; i<nbr_particles; i++) {
 			forces[i] = 0;    // x-component of force for particle i
 			if (prank == 0) {
-			printf("part %d | %d", array[i].id, array[i].mpi_id);
+			printf("part %d | %d \n", array[i].id, array[i].mpi_id);
 			}
 			MPI_Barrier(MPI_COMM_WORLD);
 		}
@@ -67,11 +67,11 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
 		MPI_Barrier(MPI_COMM_WORLD);
 		//broadcast_force_vector(root1, forces);
-		broadcast_force_vector_array(array, forces, nbr_particles, prank, psize);
+		broadcast_force_vector_array(array, forces, nbr_particles);
 		MPI_Barrier(MPI_COMM_WORLD);
 
 		compare_arrays(array, nbr_particles, prank, psize);
-		compare_arrays_except_forces(array, nbr_particles, prank, psize);
+		compare_arrays_except_forces(array, nbr_particles);
 
 		move_all_particles(root2, root1, step);
 		MPI_Barrier(MPI_COMM_WORLD);
@@ -667,7 +667,7 @@ void gather_force_vector(node * n, double *forces) {
 
 
 
-void broadcast_force_vector_array(particle_t * array, double *forces, int nbr_particles, int prank, int psize) {
+void broadcast_force_vector_array(particle_t * array, double *forces, int nbr_particles) {
 	for(int i=0; i<nbr_particles; i++) {
 		array[i].fx = forces[3 * i];    // x-component of force for particle i
 		array[i].fy = forces[3 * i + 1];    // y-component of force for particle i
@@ -675,7 +675,7 @@ void broadcast_force_vector_array(particle_t * array, double *forces, int nbr_pa
 	}
 }
 
-void gather_force_vector_array(particle_t * array, double *forces, int nbr_particles, int prank, int psize) {
+void gather_force_vector_array(particle_t * array, double *forces, int nbr_particles) {
 	for(int i=0; i<nbr_particles; i++) {
 		forces[3 * i] = array[i].fx;    // x-component of force for particle i
 		forces[3 * i + 1] = array[i].fy;    // y-component of force for particle i
