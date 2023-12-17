@@ -617,55 +617,47 @@ void gather_force_vector(node * n, double *forces) {
 			gather_force_vector(&n->children[i], forces);
 		}
 	}else{
-		// printf("Inside Gathering forces\n");
 		particle_t *particles = n->particle;
-		// printf("Gathering forces\n");
+
 		for (j = 0; j < n->sub_nbr_particles; j++) {
-			// printf("Gathering force %d\n", j);
 			particle_t *p = &particles[j];
-			// printf("fx force %d\n", j);
-			// printf("p->mpi_id: %d\n", p->mpi_id);
-			// printf("p->fx: %f\n", p->fx);
 			forces[3 * p->mpi_id] = p->fx;    // x-component of force for particle i
-			// printf("fy force %d\n", j);
 			forces[3 * p->mpi_id + 1] = p->fy;    // y-component of force for particle i
-			// printf("fz force %d\n", j);
 			forces[3 * p->mpi_id + 2] = p->fz;    // z-component of force for particle i
 		}
 	}
 }
 
-// void gather_force_vector(node * n, double *forces) {
-// 	printf("Inside Gathering forces\n");
-// 	int j;
-// 	particle_t *particles = n->particle;
-// 	printf("Gathering forces\n");
-// 	for (j = 0; j < n->sub_nbr_particles; j++) {
-// 		printf("Gathering force %d\n", j);
-// 		particle_t *p = &particles[j];
-// 		printf("fx force %d\n", j);
-// 		printf("p->mpi_id: %d\n", p->mpi_id);
-// 		printf("p->fx: %f\n", p->fx);
-// 		forces[3 * p->mpi_id] = p->fx;    // x-component of force for particle i
-// 		printf("fy force %d\n", j);
-// 		forces[3 * p->mpi_id + 1] = p->fy;    // y-component of force for particle i
-// 		printf("fz force %d\n", j);
-// 		forces[3 * p->mpi_id + 2] = p->fz;    // z-component of force for particle i
-// 	}
-// }
-
 void broadcast_force_vector(node * n, double *forces) {
-	int j;
-	particle_t *particles = n->particle;
-	printf("Broadcasting forces\n");
-	for (j = 0; j < n->sub_nbr_particles; j++) {
-		printf("Broadcasting force %d\n", j);
-		particle_t *p = &particles[j];
-		p->fx = forces[3 * p->mpi_id];    // x-component of force for particle i
-		p->fy = forces[3 * p->mpi_id + 1];    // y-component of force for particle i
-		p->fz = forces[3 * p->mpi_id + 2];    // z-component of force for particle i
+	int i, j;
+	if(n->children != NULL){
+		for (i = 0; i < 8; i++){
+			gather_force_vector(&n->children[i], forces);
+		}
+	}else{
+		particle_t *particles = n->particle;
+
+		for (j = 0; j < n->sub_nbr_particles; j++) {
+			particle_t *p = &particles[j];
+			p->fx = forces[3 * p->mpi_id];    // x-component of force for particle i
+			p->fy = forces[3 * p->mpi_id + 1];    // y-component of force for particle i
+			p->fz = forces[3 * p->mpi_id + 2];    // z-component of force for particle i
+		}
 	}
 }
+
+// void broadcast_force_vector(node * n, double *forces) {
+// 	int j;
+// 	particle_t *particles = n->particle;
+// 	printf("Broadcasting forces\n");
+// 	for (j = 0; j < n->sub_nbr_particles; j++) {
+// 		printf("Broadcasting force %d\n", j);
+// 		particle_t *p = &particles[j];
+// 		p->fx = forces[3 * p->mpi_id];    // x-component of force for particle i
+// 		p->fy = forces[3 * p->mpi_id + 1];    // y-component of force for particle i
+// 		p->fz = forces[3 * p->mpi_id + 2];    // z-component of force for particle i
+// 	}
+// }
 
 
 // void gather_force_vector(particle_t *array, int nbr_particles, double *forces) {
