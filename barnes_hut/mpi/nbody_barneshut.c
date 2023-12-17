@@ -38,7 +38,6 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	
 	for (n = 0 ; n  < nbr_iterations ; n++){
 
-
 		compute_force_in_node(root1, root1, prank, psize);
 		compute_bh_force(root1, prank, psize);
 
@@ -197,19 +196,6 @@ void compute_bh_force(node * n, int prank, int psize) {
 	}
 }
 
-// void compute_bh_force(node * n, int prank, int psize) {
-// 	int i;
-// 	if(n->children != NULL){
-// 		for (i = 0; i < 8; i++){
-// 			compute_bh_force(&n->children[i], prank, psize);
-// 		}
-// 	}else{
-// 		particle_t * p = n->particle;
-// 		compute_force_particle(n,p);
-// 	}
-// }
-
-
 /*
 Compute force of node n on particle p
 */
@@ -244,43 +230,6 @@ void compute_force_particle(node * n, particle_t * p){
 }
 
 
-// void compute_force_particle(node *n, particle_t *p, int prank, int psize) {
-//     int i, j;
-//     double diffx, diffy, diffz, distance;
-//     double size;
-
-//     if ((n == NULL) || (n->sub_nbr_particles == 0)) { return; }
-
-//     // Check if the particle's id is in the process before processing
-//     for (j = 0; j < n->sub_nbr_particles; j++) {
-// 		printf("Num particles: %d\n", n->sub_nbr_particles);
-//         // Only process particles with an even id
-//         if (p[j].mpi_id % psize == prank) {
-//             if ((n->particle != NULL) && (n->children == NULL)) {
-//                 compute_force(&p[j], n->centerx, n->centery, n->centerz, n->mass);
-//             } else {
-//                 size = n->maxx - n->minx;
-//                 diffx = n->centerx - p[j].x;
-//                 diffy = n->centery - p[j].y;
-//                 diffz = n->centerz - p[j].z;
-//                 distance = sqrt(diffx * diffx + diffy * diffy + diffz * diffz);
-
-// 				//	The particle is far away. Use an approximation of the force
-//                 if (size / distance < THETA) {
-//                     compute_force(&p[j], n->centerx, n->centery, n->centerz, n->mass);
-//                 } else {
-// 				//  Otherwise, run the procedure recursively on each of the current node's children.
-//                     for (i = 0; i < 8; i++) {
-//                         compute_force_particle(&n->children[i], p, prank, psize);
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }
-
-
-
 /*
 Compute force 
 */
@@ -303,27 +252,6 @@ void compute_force(particle_t *p, double xpos, double ypos,  double zpos, double
 /*
 Compute all the forces in the particles
 */
-
-// void compute_force_in_node(node *n,node *root, int prank, int psize) {
-// 	int i;
-// 	if(n==NULL) return;
-
-// 	if((n->particle != NULL)&&(n->children == NULL)) {
-// 		particle_t*p = n->particle;
-// 		p->fx = 0;
-// 		p->fy = 0;
-// 		p->fz = 0;
-// 		//if(n->particle->mpi_id % psize == prank){
-// 			compute_force_particle(root, p);
-// 		//}
-// 	}
-// 	if(n->children != NULL) {
-// 		for(i=0; i<8; i++) {
-// 			compute_force_in_node(&n->children[i], root, prank, psize);
-// 		}
-// 	}
-// }
-
 
 void compute_force_in_node(node *n, node *root, int prank, int psize) {
     int i, j;
@@ -353,7 +281,6 @@ void compute_force_in_node(node *n, node *root, int prank, int psize) {
 }
 
 
-
 /*
 Construction of the barnes-hut tree
 
@@ -368,7 +295,6 @@ void construct_bh_tree(particle_t * array, node * root, int nbr_particles){
 		insert_particle(&array[i],root);
 	}
 }
-
 
 
 /*
@@ -642,19 +568,23 @@ void gather_force_vector(node * n, double *forces) {
 
 
 
-void broadcast_force_vector_array(particle_t * array, double *forces, int nbr_particles) {
+void broadcast_force_vector_array(particle_t * array, double *forces, int nbr_particles, int prank, int psize) {
 	for(int i=0; i<nbr_particles; i++) {
-		array[i].fx = forces[3 * i];    // x-component of force for particle i
-		array[i].fy = forces[3 * i + 1];    // y-component of force for particle i
-		array[i].fz = forces[3 * i + 2];    // z-component of force for particle i
+		if(i%psize == prank) {
+			array[i].fx = forces[3 * i];    // x-component of force for particle i
+			array[i].fy = forces[3 * i + 1];    // y-component of force for particle i
+			array[i].fz = forces[3 * i + 2];    // z-component of force for particle i
+		}
 	}
 }
 
-void gather_force_vector_array(particle_t * array, double *forces, int nbr_particles) {
+void gather_force_vector_array(particle_t * array, double *forces, int nbr_particles, int prank, int psize) {
 	for(int i=0; i<nbr_particles; i++) {
-		forces[3 * i] = array[i].fx;    // x-component of force for particle i
-		forces[3 * i + 1] = array[i].fy;    // y-component of force for particle i
-		forces[3 * i + 2] = array[i].fz;    // z-component of force for particle i
+		if(i%psize == prank) {
+			forces[3 * i] = array[i].fx;    // x-component of force for particle i
+			forces[3 * i + 1] = array[i].fy;    // y-component of force for particle i
+			forces[3 * i + 2] = array[i].fz;    // z-component of force for particle i
+		}
 	}
 }
 
