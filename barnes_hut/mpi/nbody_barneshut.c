@@ -47,12 +47,15 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		compute_bh_force(root1, prank, psize);
 		MPI_Barrier(MPI_COMM_WORLD);
 
-		gather_force_vector(root1, forces);
+		//gather_force_vector(root1, forces);
+		gather_force_vector_array(array, forces, nbr_particles, prank, psize);
 		MPI_Barrier(MPI_COMM_WORLD);
 		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
 		MPI_Barrier(MPI_COMM_WORLD);
-		broadcast_force_vector(root1, forces);
+		//broadcast_force_vector(root1, forces);
+		broadcast_force_vector_array(array, forces, nbr_particles, prank, psize);
 		MPI_Barrier(MPI_COMM_WORLD);
+		
 		compare_arrays(array, nbr_particles, prank, psize);
 		compare_arrays_except_forces(array, nbr_particles, prank, psize);
 
