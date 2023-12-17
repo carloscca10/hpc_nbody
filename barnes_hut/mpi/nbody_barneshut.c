@@ -35,7 +35,6 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	// compute_force_in_node(root1, root1);
 	// printf(" OK \n");
 	//printf("Compute forces ...\n");
-	MPI_Barrier(MPI_COMM_WORLD);
 	
 	for (n = 0 ; n  < nbr_iterations ; n++){
 
@@ -43,36 +42,26 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 			forces[i] = 0;
 		}
 
-		MPI_Barrier(MPI_COMM_WORLD);
 		compute_force_in_node(root1, root1, prank, psize);
 		compute_bh_force(root1, prank, psize);
-		MPI_Barrier(MPI_COMM_WORLD);
 
 		//gather_force_vector(root1, forces);
 		gather_force_vector_array(array, forces, nbr_particles);
-		MPI_Barrier(MPI_COMM_WORLD);
-
-		MPI_Barrier(MPI_COMM_WORLD);
 		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
 		//broadcast_force_vector(root1, forces);
 		broadcast_force_vector_array(array, forces, nbr_particles);
-		MPI_Barrier(MPI_COMM_WORLD);
 
 		move_all_particles(root2, root1, step);
-		MPI_Barrier(MPI_COMM_WORLD);
 
 		root = root1;
 		root1 = root2;
 		root2 = root;
-		MPI_Barrier(MPI_COMM_WORLD);
 		clean_tree(root2);
-		MPI_Barrier(MPI_COMM_WORLD);
 		if(prank==0) {
 			printf("%d: ITERATION %d \n",prank, n);
 			print_particle_it(&array[7], prank, psize, n);
 			printf("%d particles still in space \n",root1->sub_nbr_particles);
 		}
-		MPI_Barrier(MPI_COMM_WORLD);
 	}
 
 	printf("It remains %d particles in space \n",root1->sub_nbr_particles);	
