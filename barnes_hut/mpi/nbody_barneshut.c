@@ -39,18 +39,13 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	// printf(" OK \n");
 	//printf("Compute forces ...\n");
 	MPI_Barrier(MPI_COMM_WORLD);
-	compare_arrays(array, nbr_particles, prank, psize);
-	MPI_Barrier(MPI_COMM_WORLD);
 
 	for (n = 0 ; n  < nbr_iterations ; n++){
 		printf("%d: ITERATION %d \n",prank, n);
-		compare_arrays(array, nbr_particles, prank, psize);
 		compute_force_in_node(root1, root1, prank, psize);
 		MPI_Barrier(MPI_COMM_WORLD);
-		compare_arrays_except_forces(array, nbr_particles, prank, psize);
 		compute_bh_force(root1, prank, psize);
 		MPI_Barrier(MPI_COMM_WORLD);
-		compare_arrays_except_forces(array, nbr_particles, prank, psize);
 
 		gather_force_vector(root1, forces);
 		MPI_Barrier(MPI_COMM_WORLD);
@@ -60,15 +55,6 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		MPI_Barrier(MPI_COMM_WORLD);
 		compare_arrays(array, nbr_particles, prank, psize);
 		compare_arrays_except_forces(array, nbr_particles, prank, psize);
-
-
-		particle_t *gathered_arrays = NULL;
-			if (prank == 0) {
-				gathered_arrays = malloc(sizeof(particle_t) * nbr_particles * psize);
-			}
-		MPI_Gather(array, nbr_particles * sizeof(particle_t), MPI_BYTE, gathered_arrays, nbr_particles * sizeof(particle_t), MPI_BYTE, 0, MPI_COMM_WORLD);
-
-		compare_arrays(array, nbr_particles, prank, psize);
 
 		move_all_particles(root2, root1, step);
 		MPI_Barrier(MPI_COMM_WORLD);
@@ -661,6 +647,25 @@ void gather_force_vector(node * n, double *forces) {
         }
     }
 }
+
+
+
+void broadcast_force_vector_array(particle_t * array, double *forces, int nbr_particles, int prank, int psize) {
+	for(int i=0; i<nbr_particles; i++) {
+		array[i].fx = forces[3 * i];    // x-component of force for particle i
+		array[i].fy = forces[3 * i + 1];    // y-component of force for particle i
+		array[i].fz = forces[3 * i + 2];    // z-component of force for particle i
+	}
+}
+
+void gather_force_vector_array(particle_t * array, double *forces, int nbr_particles, int prank, int psize) {
+	for(int i=0; i<nbr_particles; i++) {
+		forces[3 * i] = array[i].fx;    // x-component of force for particle i
+		forces[3 * i + 1] = array[i].fy;    // y-component of force for particle i
+		forces[3 * i + 2] = array[i].fz;    // z-component of force for particle i
+	}
+}
+
 
 
 
