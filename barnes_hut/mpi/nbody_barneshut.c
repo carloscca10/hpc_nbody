@@ -168,6 +168,7 @@ compute the forces on the BH tree (I think it is the force by other particles in
 */
 
 void compute_bh_force(node * n, int prank, int psize) {
+	int i,j;
 	if(n->children != NULL){
 		for (i = 0; i < 8; i++){
 			compute_bh_force(&n->children[i], prank, psize);
@@ -175,7 +176,7 @@ void compute_bh_force(node * n, int prank, int psize) {
 	}else{
 		particle_t *particles = n->particle;
 		//if(n->particle->mpi_id % psize == prank){
-		for (int i = 0; i < n->sub_nbr_particles; i++) {
+		for (int  = 0; j < n->sub_nbr_particles; j++) {
 			particle_t *p = &particles[i];
 			//if (p->mpi_id % psize == prank) {
 				compute_force_particle(n, p);
