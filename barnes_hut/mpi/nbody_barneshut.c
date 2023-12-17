@@ -56,8 +56,12 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		// 	array[i].fy = 0;    // y-component of force for particle i
 		// 	array[i].fz = 0;    // z-component of force for particle i
 		// }
-		for(int i=0; i<3*nbr_particles; i++) {
+		for(int i=0; i<nbr_particles; i++) {
 			forces[i] = 0;    // x-component of force for particle i
+			if (prank == 0) {
+			printf("part %d | %d", array[i].id, array[i].mpi_id);
+			}
+			MPI_Barrier(MPI_COMM_WORLD);
 		}
 
 		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
