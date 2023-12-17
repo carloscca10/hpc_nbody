@@ -681,7 +681,7 @@ void broadcast_force_vector(node * n, double *forces) {
 
 
 
-bool compare_arrays(particle_t *gathered_arrays, int nbr_particles, int prank, int psize) {
+bool compare_arrays(particle_t * array, int nbr_particles, int prank, int psize) {
 	particle_t *gathered_arrays = NULL;
 	bool equal = true;
 
@@ -715,6 +715,9 @@ bool compare_arrays(particle_t *gathered_arrays, int nbr_particles, int prank, i
 		}
 		if(equal) {
 		printf(" \n\n GOOD: Arrays equal!\n\n");
+		}
+		if (prank == 0) {
+			free(gathered_arrays);
 		}
 	}
 }
