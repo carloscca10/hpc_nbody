@@ -14,10 +14,6 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	particle_t tmp;
 	double forces[3 * nbr_particles];
 
-	for(int i = 0; i < 3*nbr_particles; i++) {
-		forces[i] = 0;
-	}
-
 	//printf("Creation of the tree ...");
 	root1 = malloc(sizeof(node));	
 	root2 = malloc(sizeof(node));	
@@ -45,7 +41,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		// }
 
 		gather_force_vector(array, nbr_particles, forces);
-		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
+		//MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);
 		broadcast_force_vector(array, nbr_particles, forces);
 		
 		move_all_particles(root2, root1, step);
@@ -172,7 +168,6 @@ compute the forces on the BH tree (I think it is the force by other particles in
 */
 
 void compute_bh_force(node * n, int prank, int psize) {
-	int i;
 	if(n->children != NULL){
 		for (i = 0; i < 8; i++){
 			compute_bh_force(&n->children[i], prank, psize);
@@ -180,11 +175,11 @@ void compute_bh_force(node * n, int prank, int psize) {
 	}else{
 		particle_t *particles = n->particle;
 		//if(n->particle->mpi_id % psize == prank){
-		for (i = 0; i < n->sub_nbr_particles; i++) {
+		for (int i = 0; i < n->sub_nbr_particles; i++) {
 			particle_t *p = &particles[i];
-			if (p->mpi_id % psize == prank) {
+			//if (p->mpi_id % psize == prank) {
 				compute_force_particle(n, p);
-			}
+			//}
 		//}
 		}
 	}
@@ -331,9 +326,9 @@ void compute_force_in_node(node *n, node *root, int prank, int psize) {
 			p->fy = 0;
 			p->fz = 0;
 			//printf("Particle %i | %i\n", p->id, p->mpi_id);
-			if (p->mpi_id % psize == prank) {
+			//if (p->mpi_id % psize == prank) {
 				compute_force_particle(root, p);
-			}
+			//}
         }
     }
 
