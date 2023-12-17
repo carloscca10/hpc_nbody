@@ -690,9 +690,9 @@ void compare_arrays(particle_t * array, int nbr_particles, int prank, int psize)
 	MPI_Gather(array, nbr_particles * sizeof(particle_t), MPI_BYTE, gathered_arrays, nbr_particles * sizeof(particle_t), MPI_BYTE, 0, MPI_COMM_WORLD);
 
 	if (prank == 0) {
-		for (int i = 0; i < psize - 1; ++i) {
-			for (int j = i + 1; j < psize; ++j) {
-				for (int k = 0; k < nbr_particles; ++k) {
+		for (int i = 0; i < psize - 1 && equal; ++i) {
+			for (int j = i + 1; j < psize && equal; ++j) {
+				for (int k = 0; k < nbr_particles && equal; ++k) {
 					int index1 = i * nbr_particles + k;
 					int index2 = j * nbr_particles + k;
 
