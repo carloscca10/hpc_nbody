@@ -51,11 +51,11 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		gather_force_vector_array(array, forces, nbr_particles, prank, psize);
 		MPI_Barrier(MPI_COMM_WORLD);
 
-		for(int i=0; i<nbr_particles; i++) {
-			array[i].fx = 0;    // x-component of force for particle i
-			array[i].fy = 0;    // y-component of force for particle i
-			array[i].fz = 0;    // z-component of force for particle i
-		}
+		// for(int i=0; i<nbr_particles; i++) {
+		// 	array[i].fx = 0;    // x-component of force for particle i
+		// 	array[i].fy = 0;    // y-component of force for particle i
+		// 	array[i].fz = 0;    // z-component of force for particle i
+		// }
 		for(int i=0; i<3*nbr_particles; i++) {
 			forces[i] = 0;    // x-component of force for particle i
 		}
