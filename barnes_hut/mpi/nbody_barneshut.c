@@ -18,7 +18,6 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	node * root;
 	particle_t tmp;
 	double forces[3 * nbr_particles];
-	double total_force = 0;
 
 	//printf("Creation of the tree ...");
 	root1 = malloc(sizeof(node));	
@@ -71,6 +70,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		if(prank==0) {
 			printf("%d: ITERATION %d \n",prank, n);
 			print_particle_it(&array[7], prank, psize, n);
+			printf("%d particles still in space \n",root1->sub_nbr_particles);
 		}
 		MPI_Barrier(MPI_COMM_WORLD);
 	}
