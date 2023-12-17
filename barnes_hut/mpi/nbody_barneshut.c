@@ -150,7 +150,7 @@ void move_particle(node * root, node * n, particle_t * p, double step) {
 	if (! is_particle_out_of_scope(p,root)) {
 		insert_particle(p,root);
 	}else{
-		//printf("Particle %d | %d is out of scope. (%f, %f, %f) \n",p->id, p->mpi_id, p->x, p->y, p->z);
+		printf("Particle %d | %d is out of scope. (%f, %f, %f) \n",p->id, p->mpi_id, p->x, p->y, p->z);
 		n->particle = NULL;
 	}
 }
@@ -800,7 +800,7 @@ void check_no_f_if_not_rank(particle_t * array, int nbr_particles, int prank, in
 	for(int i=0; i<nbr_particles; i++) {
 		if(array[i].mpi_id % psize != prank) {
 			if(array[i].fx != 0 || array[i].fy != 0 || array[i].fz != 0) {
-				printf("ERROR: Particle %d has non-zero forces!\n", array[i].id);
+				printf("ERROR: Particle %d has non-zero forces!\n", array[i].mpi_id);
 				equal = false;
 			}
 		}
