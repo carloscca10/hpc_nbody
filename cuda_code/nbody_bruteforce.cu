@@ -100,19 +100,27 @@ void nbodybruteforce (particle_t * host_array, int nbr_particles, int nbr_iterat
         return; // or handle the error as appropriate
     }
 
-	//printf("final values of array[7]:\n");
-	printf("final values of array[7]:\n");
-	printf("x: %lf\n", host_array[7].x);
-	printf("y: %lf\n", host_array[7].y);
-	printf("z: %lf\n", host_array[7].z);
-	printf("vx: %lf\n", host_array[7].vx);
-	printf("vy: %lf\n", host_array[7].vy);
-	printf("vz: %lf\n", host_array[7].vz);
-	printf("fx: %lf\n", host_array[7].fx);
-	printf("fy: %lf\n", host_array[7].fy);
-	printf("fz: %lf\n", host_array[7].fz);
-	printf("m: %lf\n", host_array[7].m);
-	printf("id: %d\n", host_array[7].id);
-	printf("V: %lf\n", host_array[7].V);
+	// printf("final values of array[7]:\n");
+	// printf("x: %lf\n", host_array[7].x);
+	// printf("y: %lf\n", host_array[7].y);
+	// printf("z: %lf\n", host_array[7].z);
+	// printf("vx: %lf\n", host_array[7].vx);
+	// printf("vy: %lf\n", host_array[7].vy);
+	// printf("vz: %lf\n", host_array[7].vz);
+	// printf("fx: %lf\n", host_array[7].fx);
+	// printf("fy: %lf\n", host_array[7].fy);
+	// printf("fz: %lf\n", host_array[7].fz);
+	// printf("m: %lf\n", host_array[7].m);
+	// printf("id: %d\n", host_array[7].id);
+	// printf("V: %lf\n", host_array[7].V);
+
+	printf("[Particle %d]", host_array[7].id);
+	printf(" Position ([%lf:%lf:%lf])", host_array[7].x, host_array[7].y, host_array[7].z);
+	// printf(" Velocity ([%lf:%lf:%lf])", host_array[7].vx, host_array[7].vy, host_array[7].vz);
+	printf(" Force ([%lf:%lf:%lf])", host_array[7].fx, host_array[7].fy, host_array[7].fz);
+	printf(" M = %lf", host_array[7].m);
+	// printf(" Volume = %lf", host_array[7].V);
+	printf("\n");
+
 
 }
