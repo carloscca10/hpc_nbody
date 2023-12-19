@@ -3,7 +3,7 @@
 #SBATCH --account=math-454
 #SBATCH --time=00:10:00
 #SBATCH -N 1  # Request 1 node
-#SBATCH -n 2  # Request 2 tasks (processors)
+#SBATCH -n 1  # Request 2 tasks (processors)
 module purge
 module load intel intel-oneapi-mpi
 
