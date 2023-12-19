@@ -6,8 +6,6 @@
 Min and max functions
 */
 
-// condition ? expression_if_true : expression_if_false;
-
 double max(double x, double y) 
 {
 	return ((x) > (y) ? (x) : (y));
@@ -82,7 +80,7 @@ void compute_brute_force(particle_t * p1, particle_t * array, int nbr_particles,
 void update_positions(particle_t * array, int nbr_particles, double step) {
 	for (int i = 0 ; i  < nbr_particles ; i++){
 		particle_t *p1 = &array[i];
-      p1->x += p1->vx * step;
+    p1->x += p1->vx * step;
 	  p1->y += p1->vy * step;
 	  p1->z += p1->vz * step;
 	}

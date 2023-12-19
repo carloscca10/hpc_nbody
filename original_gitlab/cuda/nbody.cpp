@@ -5,11 +5,10 @@
 #include <stddef.h>
 #include "parameters.h"
 #include "nbody_bruteforce.h"
-#include "nbody_barneshut.h"
 #include "reader.h"
 #include <sys/time.h>
 
-void print_parameters(void){
+void print_parameters(){
 	printf("====================================================\n");
 	printf("N-Body 3D simulation code for MATH-454 course EPFL  \n");
 	printf("Parameters for the Barnes-Hut algorithm:\n");
@@ -27,7 +26,7 @@ void print_parameters(void){
 	printf("\n");
 }
 
-double second(void)
+double second()
 {
         struct timeval tp;
         struct timezone tzp;
@@ -45,13 +44,6 @@ It is possible to download the Gadget2 test cases to test your code
 Code largely inspired by http://www-inf.telecom-sudparis.eu/COURS/CSC5001/new_site/Supports/Projet/NBody/sujet.php
 
 */
-
-// argc: argument count,    argv: argument vector.
-
-// example: ./program arg1 arg2
-// argc = 3
-// argv[0] = "./program",   argv[1] = "arg1",   argv[2] = "arg2"
-
 int main ( int argc, char **argv ) {
 
 	particle_t * array;
@@ -66,7 +58,7 @@ int main ( int argc, char **argv ) {
 	if (argc < 2)
 	{
 		fprintf(stderr, "Usage: %s [martix-market-filename]\n", argv[0]);
-		exit(1); // exit with an error
+		exit(1);
 	}
 	else    
 	{ 
@@ -81,16 +73,7 @@ int main ( int argc, char **argv ) {
 	nbodybruteforce(array, nbr_particles, nbr_iterations);
 	t2 = second();
 	printf("N-Body brute force for %d particles : %f [s] \n",nbr_iterations, (t2-t1));
-	
-	/*
-	printf("BARNES-HUT simulation starting \n");
-	array = read_test_case(argv[1]);
-	t1 = second();
-	nbodybarneshut(array, nbr_particles, nbr_iterations);
-	t2 = second();
-	printf("N-Body barnes-hut for %d particles : %f [s] \n",nbr_particles, (t2-t1));
 	free(array);
-	*/
 
 	printf("Simulation finished \n");
 	return 0;

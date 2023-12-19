@@ -1,8 +1,8 @@
 CC=gcc
 LD=${CC}
 DEBUG=-g
-CFLAGS+=-Wall -Wextra -pedantic -O3 -pg $(DEBUG)
-LDFLAGS+=-lm -pg $(DEBUG)
+CFLAGS+=-Wall -Wextra -pedantic -O3  $(DEBUG)
+LDFLAGS+=-lm -lm $(DEBUG)
 
 OBJS_NBODY=nbody.o nbody_bruteforce.o reader.o nbody_barneshut.o
 
