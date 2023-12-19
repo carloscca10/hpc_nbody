@@ -42,10 +42,10 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		compute_bh_force(root1, prank, psize);
 
 		//gather_force_vector(root1, forces);
-		gather_force_vector_array(array, forces, nbr_particles, prank, psize);
+		gather_force_vector_array(array, forces, nbr_particles);
 		MPI_Allreduce(MPI_IN_PLACE, &forces, nbr_particles*3, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
 		//broadcast_force_vector(root1, forces);
-		broadcast_force_vector_array(array, forces, nbr_particles, prank, psize);
+		broadcast_force_vector_array(array, forces, nbr_particles);
 
 		move_all_particles(root2, root1, step);
 
@@ -544,31 +544,31 @@ OTHER MPI FUNCTIONS
 */
 
 
-void gather_force_vector(node * n, double *forces) {
-    int i, j;
-    if (n == NULL) return;
+// void gather_force_vector(node * n, double *forces) {
+//     int i, j;
+//     if (n == NULL) return;
 
-    if ((n->particle != NULL) && (n->children == NULL)) {
-        particle_t *particles = n->particle;
+//     if ((n->particle != NULL) && (n->children == NULL)) {
+//         particle_t *particles = n->particle;
 
-        for (i = 0; i < n->sub_nbr_particles; i++) {
-            particle_t *p = &particles[i];
-			forces[3 * p->mpi_id] = p->fx;    // x-component of force for particle i
-			forces[3 * p->mpi_id + 1] = p->fy;    // y-component of force for particle i
-			forces[3 * p->mpi_id + 2] = p->fz;    // z-component of force for particle i
-        }
-    }
+//         for (i = 0; i < n->sub_nbr_particles; i++) {
+//             particle_t *p = &particles[i];
+// 			forces[3 * p->mpi_id] = p->fx;    // x-component of force for particle i
+// 			forces[3 * p->mpi_id + 1] = p->fy;    // y-component of force for particle i
+// 			forces[3 * p->mpi_id + 2] = p->fz;    // z-component of force for particle i
+//         }
+//     }
 
-    if (n->children != NULL) {
-        for (j = 0; j < 8; j++) {
-            gather_force_vector(&n->children[j], forces);
-        }
-    }
-}
+//     if (n->children != NULL) {
+//         for (j = 0; j < 8; j++) {
+//             gather_force_vector(&n->children[j], forces);
+//         }
+//     }
+// }
 
 
 
-void broadcast_force_vector_array(particle_t * array, double *forces, int nbr_particles, int prank, int psize) {
+void broadcast_force_vector_array(particle_t * array, double *forces, int nbr_particles) {
 	for(int i=0; i<nbr_particles; i++) {
 		//if(i%psize == prank) {
 			array[i].fx = forces[3 * i];    // x-component of force for particle i
@@ -578,7 +578,7 @@ void broadcast_force_vector_array(particle_t * array, double *forces, int nbr_pa
 	}
 }
 
-void gather_force_vector_array(particle_t * array, double *forces, int nbr_particles, int prank, int psize) {
+void gather_force_vector_array(particle_t * array, double *forces, int nbr_particles) {
 	for(int i=0; i<nbr_particles; i++) {
 		if(i%psize == prank) {
 			forces[3 * i] = array[i].fx;    // x-component of force for particle i
@@ -593,27 +593,27 @@ void gather_force_vector_array(particle_t * array, double *forces, int nbr_parti
 }
 
 
-void broadcast_force_vector(node * n, double *forces) {
-    int i, j;
-    if (n == NULL) return;
+// void broadcast_force_vector(node * n, double *forces) {
+//     int i, j;
+//     if (n == NULL) return;
 
-    if ((n->particle != NULL) && (n->children == NULL)) {
-        particle_t *particles = n->particle;
+//     if ((n->particle != NULL) && (n->children == NULL)) {
+//         particle_t *particles = n->particle;
 
-        for (i = 0; i < n->sub_nbr_particles; i++) {
-            particle_t *p = &particles[i];
-			p->fx = forces[3 * p->mpi_id];    // x-component of force for particle i
-			p->fy = forces[3 * p->mpi_id + 1];    // y-component of force for particle i
-			p->fz = forces[3 * p->mpi_id + 2];    // z-component of force for particle i
-        }
-    }
+//         for (i = 0; i < n->sub_nbr_particles; i++) {
+//             particle_t *p = &particles[i];
+// 			p->fx = forces[3 * p->mpi_id];    // x-component of force for particle i
+// 			p->fy = forces[3 * p->mpi_id + 1];    // y-component of force for particle i
+// 			p->fz = forces[3 * p->mpi_id + 2];    // z-component of force for particle i
+//         }
+//     }
 
-    if (n->children != NULL) {
-        for (j = 0; j < 8; j++) {
-            broadcast_force_vector(&n->children[j], forces);
-        }
-    }
-}
+//     if (n->children != NULL) {
+//         for (j = 0; j < 8; j++) {
+//             broadcast_force_vector(&n->children[j], forces);
+//         }
+//     }
+// }
 
 
 
