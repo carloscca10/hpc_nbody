@@ -16,4 +16,3 @@ nbody-code: nbody.o nbody_bruteforce.o reader.o
 
 clean:
 	rm -Rf nbody-code *.o *~  gmon.out
-
