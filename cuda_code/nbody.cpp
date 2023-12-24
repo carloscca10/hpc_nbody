@@ -45,7 +45,7 @@ Code largely inspired by http://www-inf.telecom-sudparis.eu/COURS/CSC5001/new_si
 
 */
 int main ( int argc, char **argv ) {
-
+	printf("Starting N-Body simulation \n");
 	particle_t * array;
 	int nbr_iterations;
 	int nbr_particles;
