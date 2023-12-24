@@ -80,16 +80,14 @@ void nbodybruteforce (particle_t * host_array, int nbr_particles, int nbr_iterat
 	
 	for (n = 0 ; n  < nbr_iterations ; n++){
 		printf("ITERATION %d \n",n);
-		for (i = 0 ; i  < nbr_particles ; i++){
-			//compute_brute_force(&array[i], array, nbr_particles,step);
-			compute_brute_force<<<grid_size, block_size>>>(device_array, nbr_particles, step);
-			cudaDeviceSynchronize();
-		}
-	  //update_positions(array, nbr_particles,step);
-	  update_positions<<<grid_size, block_size>>>(device_array, nbr_particles, step);
-	  cudaDeviceSynchronize();
+		//compute_brute_force(&array[i], array, nbr_particles,step);
+		compute_brute_force<<<grid_size, block_size>>>(device_array, nbr_particles, step);
+		cudaDeviceSynchronize();
+	    //update_positions(array, nbr_particles,step);
+	    update_positions<<<grid_size, block_size>>>(device_array, nbr_particles, step);
+	    cudaDeviceSynchronize();
 	}
-
+	printf("END OF ITERATIONS \n");
 	cudaMemcpy(host_array, device_array, nbr_particles * sizeof(particle_t), cudaMemcpyDeviceToHost);
 	cudaFree(device_array);
 
