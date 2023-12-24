@@ -31,7 +31,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 	construct_bh_tree(array, root1, nbr_particles);
 	//printf("OK \n");
 	// printf("Init forces ...");
-	print_particle(&array[7], prank, psize);
+	//print_particle(&array[7], prank, psize);
 	// compute_force_in_node(root1, root1);
 	// printf(" OK \n");
 	//printf("Compute forces ...\n");
@@ -53,14 +53,7 @@ void nbodybarneshut (particle_t * array, int nbr_particles, int nbr_iterations, 
 		root1 = root2;
 		root2 = root;
 		clean_tree(root2);
-		if(prank==0) {
-			printf("%d: ITERATION %d \n",prank, n);
-			print_particle_it(&array[7], prank, psize, n);
-			printf("%d particles still in space \n",root1->sub_nbr_particles);
-		}
 	}
-
-	printf("It remains %d particles in space \n",root1->sub_nbr_particles);	
 
 	clean_tree(root1);
 	clean_tree(root2);
