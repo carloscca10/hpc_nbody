@@ -1,8 +1,8 @@
 NVCC       = nvcc
 # CXX     = g++
 CXX       = $(NVCC)
-NVCCFLAGS += -O3
-CXXFLAGS  += -O3 --compiler-options -Wall
+NVCCFLAGS += -O0
+CXXFLAGS  += -O0 --compiler-options -Wall -Wextra -pendatic
 # CXXFLAGS  += -O3 --compiler-options -Wall -Wextra -pendatic
 LDFLAGS   += $(NVCCFLAGS)
 
