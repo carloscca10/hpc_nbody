@@ -9,8 +9,6 @@
 #SBATCH --account=math-454
 #SBATCH --reservation=Course-math-454-final
 #SBATCH --time=01:00:00 # Time limit hrs:min:sec
-#SBATCH --output=nbody_%j.out # Standard output and error log
-#SBATCH --error=nbody_%j.err
 
 module purge
 module load gcc cuda
