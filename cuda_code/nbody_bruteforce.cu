@@ -70,7 +70,7 @@ void nbodybruteforce (particle_t * host_array, int nbr_particles, int nbr_iterat
 	// Send data to device memory
 	cudaMemcpy(device_array, host_array, nbr_particles * sizeof(particle_t), cudaMemcpyHostToDevice);
 
-	int i, n;
+	int n;
 	double step = 1.;
 
 	dim3 block_size(256);
@@ -93,11 +93,11 @@ void nbodybruteforce (particle_t * host_array, int nbr_particles, int nbr_iterat
 
 
 
-    auto error = cudaGetLastError();
-    if(error != cudaSuccess) {
-        printf("Error Launching Kernel: %s - %s\n", cudaGetErrorName(error), cudaGetErrorString(error));
-        return; // or handle the error as appropriate
-    }
+    // auto error = cudaGetLastError();
+    // if(error != cudaSuccess) {
+    //     printf("Error Launching Kernel: %s - %s\n", cudaGetErrorName(error), cudaGetErrorString(error));
+    //     return; // or handle the error as appropriate
+    // }
 
 	printf("[Particle %d]", host_array[7].id);
 	printf(" Position ([%lf:%lf:%lf])", host_array[7].x, host_array[7].y, host_array[7].z);
