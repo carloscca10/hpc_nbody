@@ -122,5 +122,4 @@ void nbodybruteforce (particle_t * host_array, int nbr_particles, int nbr_iterat
 	// printf(" Volume = %lf", host_array[7].V);
 	printf("\n");
 
-
 }
