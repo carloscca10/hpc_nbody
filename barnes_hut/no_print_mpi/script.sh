@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --reservation=Course-math-454-final
 #SBATCH --account=math-454
-#SBATCH --time=00:10:00
+#SBATCH --time=02:00:00 # Adjust the total time as needed
 #SBATCH -N 1  # Request 1 node
-#SBATCH --array=1,2,4,8,16,32  # Set processor counts
+#SBATCH -n 32  # Maximum number of tasks required
 module purge
 module load intel intel-oneapi-mpi
 
@@ -18,7 +18,7 @@ do
    # Loop over the number of processors
    for procs in 1 2 4 8 16 32
    do
-      # Update the number of tasks
-      sbatch -n $procs --wrap="srun nbody-code ${BASE_DIR}/subset_${i}.txt"
+      # Run the nbody-code with the specified number of processors
+      srun -n $procs nbody-code "${BASE_DIR}/subset_${i}.txt"
    done
 done
