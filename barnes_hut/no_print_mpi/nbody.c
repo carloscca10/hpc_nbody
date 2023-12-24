@@ -99,7 +99,10 @@ int main ( int argc, char **argv ) {
 	t1 = second();
 	nbodybarneshut(array, nbr_particles, nbr_iterations, prank, psize);
 	t2 = second();
-	printf("N-Body barnes-hut for %d particles, %d processes : %f [s] \n",nbr_particles, psize, (t2-t1));
+	if(prank == 0) {
+		printf("N-Body barnes-hut for %d particles, %d processes : %f [s] \n",nbr_particles, psize, (t2-t1));
+	}
+	
 	free(array);
 
 	MPI_Finalize();
