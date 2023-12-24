@@ -9,8 +9,7 @@ Compute force (brute force method) of particle p2 on particle p1
 Update particle p1
 */
 
-__global__ void compute_brute_force(
-	particle_t * array, int nbr_particles, double step) {
+__global__ void compute_brute_force(particle_t * array, int nbr_particles, double step) {
 	
 	int pos = threadIdx.x + blockIdx.x * blockDim.x;
 	particle_t *p1 = &array[pos];
@@ -64,19 +63,21 @@ The parallelization target is CUDA
 Input format is 
 */
 void nbodybruteforce (particle_t * host_array, int nbr_particles, int nbr_iterations) {
-
+	printf("Starting N-Body simulation with %d particles and %d iterations\n", nbr_particles, nbr_iterations);
 	particle_t *device_array;
 	cudaMallocManaged(&device_array, nbr_particles * sizeof(particle_t));
 
 	// Send data to device memory
 	cudaMemcpy(device_array, host_array, nbr_particles * sizeof(particle_t), cudaMemcpyHostToDevice);
 
-	int i,n;
+	int i, n;
 	double step = 1.;
 
 	dim3 block_size(256);
 	dim3 grid_size((nbr_particles + block_size.x - 1) / block_size.x);
-
+	printf("grid_size = %d\n", grid_size.x);
+	printf("block_size = %d\n", block_size.x);
+	
 	for (n = 0 ; n  < nbr_iterations ; n++){
 		printf("ITERATION %d \n",n);
 		for (i = 0 ; i  < nbr_particles ; i++){
