@@ -2,7 +2,7 @@
 #SBATCH --reservation=Course-math-454-final
 #SBATCH --account=math-454
 #SBATCH --time=00:10:00
-#SBATCH -N 2  # Request 1 node
+#SBATCH -N 1  # Request 1 node
 #SBATCH -n 64  # Request 2 tasks (processors)
 module purge
 module load intel intel-oneapi-mpi
