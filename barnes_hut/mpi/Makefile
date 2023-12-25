@@ -1,7 +1,7 @@
 CC=mpicc
 LD=${CC}
 DEBUG=-g
-CFLAGS+=-Wall -Wextra -pedantic -pg -O3 $(DEBUG)
+CFLAGS+=-Wall -Wextra -pedantic -pg -O0 $(DEBUG)
 LDFLAGS+=-lm -pg $(DEBUG)
 
 OBJS_NBODY=nbody.o reader.o nbody_barneshut.o
