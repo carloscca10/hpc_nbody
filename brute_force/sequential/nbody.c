@@ -80,7 +80,7 @@ int main ( int argc, char **argv ) {
 	t1 = second();
 	nbodybruteforce(array, nbr_particles, nbr_iterations);
 	t2 = second();
-	printf("N-Body brute force for %d particles : %f [s] \n",nbr_iterations, (t2-t1));
+	printf("N-Body brute force for %d particles : %f [s] \n",nbr_particles, (t2-t1));
 	
 	/*
 	printf("BARNES-HUT simulation starting \n");
