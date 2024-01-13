@@ -6,7 +6,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --qos=gpu_free
 #SBATCH --account=math-454
-#SBATCH --reservation=Course-math-454
+#SBATCH --reservation=Course-math-454-final
 
 module purge
 module load gcc cuda
