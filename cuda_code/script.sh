@@ -11,4 +11,4 @@ module load gcc cuda
 module list
 
 #nvprof is used to profile our code
-srun nbody-code $1
+srun nvprof nbody-code $1
