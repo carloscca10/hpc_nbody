@@ -73,7 +73,7 @@ void nbodybruteforce (particle_t * host_array, int nbr_particles, int nbr_iterat
 	int n;
 	double step = 1.;
 
-	dim3 block_size(32);
+	dim3 block_size(16);
 	dim3 grid_size((nbr_particles + block_size.x - 1) / block_size.x);
 	printf("grid_size = %d\n", grid_size.x);
 	printf("block_size = %d\n", block_size.x);
